@@ -29,11 +29,6 @@ const ProductsView = () => {
   });
   console.log(categories);
 
-  const filteredProducts = products.filter(
-    (product) => product.category._id == categoryId
-  );
-  // console.log(filteredProducts);
-
   const handleCheckbox = (e) => {
     const { value, checked } = e.target;
 
@@ -150,37 +145,43 @@ const ProductsView = () => {
                 <h4 className="mb-3">
                   Showing {filterByCategory.length} products
                 </h4>
-                {filterByCategory?.map((product) => (
-                  <div className="col-md-4" key={product._id}>
-                    <Link
-                      style={{ textDecoration: 'none' }}
-                      to={`/products/${product._id}`}
-                    >
-                      <div className="card mb-3">
-                        <img
-                          src={product.imageUrl}
-                          className="rounded img-fluid"
-                          alt={product.productTitle}
-                        />
-                        <div className="card-body text-center">
-                          <h5>{product.productTitle}</h5>
-                          <div className="d-flex justify-content-between">
-                            <p>₹ {product.sellingPrice}</p>
-                            <p>{product.netWeight}g</p>
+                {filterByCategory?.length > 0 ? (
+                  <>
+                    {filterByCategory?.map((product) => (
+                      <div className="col-md-4" key={product._id}>
+                        <Link
+                          style={{ textDecoration: 'none' }}
+                          to={`/products/${product._id}`}
+                        >
+                          <div className="card mb-3">
+                            <img
+                              src={product.imageUrl}
+                              className="rounded img-fluid"
+                              alt={product.productTitle}
+                            />
+                            <div className="card-body text-center">
+                              <h5>{product.productTitle}</h5>
+                              <div className="d-flex justify-content-between">
+                                <p>₹ {product.sellingPrice}</p>
+                                <p>{product.netWeight}g</p>
+                              </div>
+                              <div className="mt-3">
+                                <button className="card-link btn btn-danger">
+                                  Add to Cart
+                                </button>
+                                <button className="card-link btn btn-primary">
+                                  Add to Wishlist
+                                </button>
+                              </div>
+                            </div>
                           </div>
-                          <div className="mt-3">
-                            <button className="card-link btn btn-danger">
-                              Add to Cart
-                            </button>
-                            <button className="card-link btn btn-primary">
-                              Add to Wishlist
-                            </button>
-                          </div>
-                        </div>
+                        </Link>
                       </div>
-                    </Link>
-                  </div>
-                ))}
+                    ))}
+                  </>
+                ) : (
+                  <p>No matching product found.</p>
+                )}
               </div>
             </div>
           </div>
