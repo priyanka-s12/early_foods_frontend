@@ -30,6 +30,7 @@ const FeaturedCategories = () => {
               <Link
                 className="card text-decoration-none"
                 to={`/categories/${category._id}`}
+                state={category}
               >
                 <img
                   src={category.categoryImageUrl}

@@ -38,6 +38,7 @@ const productsSlice = createSlice({
     },
     setCategoryFilter: (state, action) => {
       state.categoryFilter = action.payload;
+      // state.categoryFilter.push(action.payload);
     },
     setRatingFilter: (state, action) => {
       state.ratingFilter = action.payload;

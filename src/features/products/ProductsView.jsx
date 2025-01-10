@@ -1,25 +1,30 @@
 import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { fetchProducts } from './productsSlice';
+import { fetchProducts, setCategoryFilter } from './productsSlice';
 import { fetchCategories } from '../category/categorySlice';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 const ProductsView = () => {
   const dispatch = useDispatch();
   const { categoryId } = useParams();
   console.log(categoryId);
 
+  const location = useLocation();
+  const { state: cat } = location;
+
+  // state variables
   const products = useSelector((state) => state.products.products);
   const status = useSelector((state) => state.products.status);
   const error = useSelector((state) => state.products.error);
-
   console.log(products);
 
+  const { categoryFilter } = useSelector((state) => state.products);
+  console.log(categoryFilter);
+
   const categories = useSelector((state) => {
-    console.log(state.categories);
     return state.categories.categories;
   });
   console.log(categories);
@@ -27,9 +32,32 @@ const ProductsView = () => {
   const filteredProducts = products.filter(
     (product) => product.category._id == categoryId
   );
-  console.log(filteredProducts);
+  // console.log(filteredProducts);
 
-  const productList = categoryId ? filteredProducts : products;
+  const handleCheckbox = (e) => {
+    const { value, checked } = e.target;
+
+    if (checked) {
+      dispatch(setCategoryFilter([...categoryFilter, value]));
+    } else {
+      dispatch(
+        setCategoryFilter(
+          categoryFilter.filter((category) => category !== value)
+        )
+      );
+    }
+  };
+
+  // const productList = categoryId ? filteredProducts : products;
+
+  const filterByCategory = products?.filter((product) =>
+    categoryFilter.includes(product.category.categoryName)
+  );
+  console.log(filterByCategory);
+
+  useEffect(() => {
+    dispatch(setCategoryFilter([...categoryFilter, cat.categoryName]));
+  }, []);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -73,7 +101,8 @@ const ProductsView = () => {
                         type="checkbox"
                         name="category"
                         value={category.categoryName}
-                        onChange={(e) => handleCheckbox(e, category._id, index)}
+                        onChange={(e) => handleCheckbox(e)}
+                        checked={categoryFilter.includes(category.categoryName)}
                       />
                       {category.categoryName}
                     </label>
@@ -118,8 +147,10 @@ const ProductsView = () => {
               {status === 'loading' && <p>Loading...</p>}
               {error && <p>{error}</p>}
               <div className="row">
-                <h4 className="mb-3">Showing {productList.length} products</h4>
-                {productList?.map((product) => (
+                <h4 className="mb-3">
+                  Showing {filterByCategory.length} products
+                </h4>
+                {filterByCategory?.map((product) => (
                   <div className="col-md-4" key={product._id}>
                     <Link
                       style={{ textDecoration: 'none' }}
