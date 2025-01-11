@@ -38,7 +38,6 @@ const productsSlice = createSlice({
     },
     setCategoryFilter: (state, action) => {
       state.categoryFilter = action.payload;
-      // state.categoryFilter.push(action.payload);
     },
     setRatingFilter: (state, action) => {
       state.ratingFilter = action.payload;
@@ -46,9 +45,10 @@ const productsSlice = createSlice({
     setSortByPriceFilter: (state, action) => {
       state.sortByPrice = action.payload;
     },
-    clearAllFilters: (state, action) => {
+    clearAllFilters: (state) => {
       state.categoryFilter = [];
       state.ratingFilter = 0;
+      state.sortByPrice = '';
     },
   },
   extraReducers: (builder) => {
@@ -83,5 +83,6 @@ export const {
   setCategoryFilter,
   setRatingFilter,
   setSortByPriceFilter,
+  clearAllFilters,
 } = productsSlice.actions;
 export default productsSlice.reducer;

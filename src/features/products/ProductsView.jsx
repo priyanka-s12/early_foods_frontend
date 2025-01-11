@@ -1,33 +1,43 @@
 import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { fetchProducts, setCategoryFilter } from './productsSlice';
+import {
+  fetchProducts,
+  setCategoryFilter,
+  setRatingFilter,
+  setSortByPriceFilter,
+  clearAllFilters,
+} from './productsSlice';
 import { fetchCategories } from '../category/categorySlice';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const ProductsView = () => {
   const dispatch = useDispatch();
-  const { categoryId } = useParams();
-  console.log(categoryId);
 
   const location = useLocation();
-  const { state: cat } = location;
+  const { state: item } = location;
 
   // state variables
   const products = useSelector((state) => state.products.products);
   const status = useSelector((state) => state.products.status);
   const error = useSelector((state) => state.products.error);
-  console.log(products);
+  // console.log(products);
 
   const { categoryFilter } = useSelector((state) => state.products);
-  console.log(categoryFilter);
+  // console.log(categoryFilter);
+
+  const { ratingFilter } = useSelector((state) => state.products);
+  // console.log(ratingFilter);
+
+  const { sortByPrice } = useSelector((state) => state.products);
+  // console.log(sortByPrice);
 
   const categories = useSelector((state) => {
     return state.categories.categories;
   });
-  console.log(categories);
+  // console.log(categories);
 
   const handleCheckbox = (e) => {
     const { value, checked } = e.target;
@@ -43,15 +53,28 @@ const ProductsView = () => {
     }
   };
 
-  // const productList = categoryId ? filteredProducts : products;
-
   const filterByCategory = products?.filter((product) =>
     categoryFilter.includes(product.category.categoryName)
   );
-  console.log(filterByCategory);
+
+  const filterByRating = filterByCategory?.filter(
+    (product) => product.rating >= ratingFilter
+  );
+  console.log(filterByRating);
+
+  const handleSort = (e) => {
+    dispatch(setSortByPriceFilter(e.target.value));
+  };
+
+  const sortByPriceFilter = filterByRating.sort((a, b) =>
+    sortByPrice === 'lowToHigh'
+      ? a.sellingPrice - b.sellingPrice
+      : b.sellinPrice - a.sellingPrice
+  );
+  console.log(sortByPriceFilter);
 
   useEffect(() => {
-    dispatch(setCategoryFilter([...categoryFilter, cat.categoryName]));
+    dispatch(setCategoryFilter([...categoryFilter, item.categoryName]));
   }, []);
 
   useEffect(() => {
@@ -69,10 +92,16 @@ const ProductsView = () => {
             <div className="col-md-3 mb-3">
               <div className="d-flex justify-content-between">
                 <h5>Filters</h5>
-                <Link>Clear</Link>
+                <button
+                  className="btn text-primary fw-medium"
+                  onClick={() => dispatch(clearAllFilters())}
+                >
+                  Clear
+                </button>
               </div>
               <div className="my-3">
                 <h6>Price</h6>
+                <span>{}</span>
                 <input
                   type="range"
                   className="form-range"
@@ -89,7 +118,7 @@ const ProductsView = () => {
               </div>
               <div>
                 <h6>Category</h6>
-                {categories?.map((category, index) => (
+                {categories?.map((category) => (
                   <div key={category._id}>
                     <label>
                       <input
@@ -108,31 +137,43 @@ const ProductsView = () => {
 
               <div className="my-4">
                 <h6>Rating</h6>
-                <label>
-                  <input type="radio" name="rating" /> 4 Stars & above
-                </label>
-                <br />
-                <label>
-                  <input type="radio" name="rating" /> 3 Stars & above
-                </label>
-                <br />
-                <label>
-                  <input type="radio" name="rating" /> 2 Stars & above
-                </label>
-                <br />
-                <label>
-                  <input type="radio" name="rating" /> 1 Stars & above
-                </label>
+                {[4, 3, 2, 1].map((ratingNumber, index) => (
+                  <div key={index}>
+                    <label>
+                      <input
+                        type="radio"
+                        name="rating"
+                        value={ratingNumber}
+                        onChange={(e) =>
+                          dispatch(setRatingFilter(e.target.value))
+                        }
+                      />{' '}
+                      {ratingNumber} stars and above
+                    </label>
+                  </div>
+                ))}
               </div>
 
               <div className="my-3">
                 <h6>Sort by</h6>
                 <label>
-                  <input type="radio" /> Price - Low to High
+                  <input
+                    type="radio"
+                    name="sortByPrice"
+                    value="lowToHigh"
+                    onChange={handleSort}
+                  />{' '}
+                  Price - Low to High
                 </label>
                 <br />
                 <label>
-                  <input type="radio" /> Price - High to Low
+                  <input
+                    type="radio"
+                    name="sortByPrice"
+                    value="highToLow"
+                    onChange={handleSort}
+                  />{' '}
+                  Price - High to Low
                 </label>
               </div>
             </div>
@@ -143,11 +184,11 @@ const ProductsView = () => {
               {error && <p>{error}</p>}
               <div className="row">
                 <h4 className="mb-3">
-                  Showing {filterByCategory.length} products
+                  Showing {sortByPriceFilter.length} products
                 </h4>
-                {filterByCategory?.length > 0 ? (
+                {sortByPriceFilter?.length > 0 ? (
                   <>
-                    {filterByCategory?.map((product) => (
+                    {sortByPriceFilter?.map((product) => (
                       <div className="col-md-4" key={product._id}>
                         <Link
                           style={{ textDecoration: 'none' }}
