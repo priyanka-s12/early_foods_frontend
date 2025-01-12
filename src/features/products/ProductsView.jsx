@@ -6,6 +6,7 @@ import {
   setCategoryFilter,
   setRatingFilter,
   setSortByPriceFilter,
+  setPriceRangeFilter,
   clearAllFilters,
 } from './productsSlice';
 import { fetchCategories } from '../category/categorySlice';
@@ -25,19 +26,36 @@ const ProductsView = () => {
   const error = useSelector((state) => state.products.error);
   // console.log(products);
 
-  const { categoryFilter } = useSelector((state) => state.products);
+  const priceRange = useSelector((state) => state.products.priceRange);
+  console.log(priceRange);
+
+  const maxPrice = useSelector((state) => state.products.maxPrice);
+
+  const minPrice = useSelector((state) => state.products.minPrice);
+
+  const categoryFilter = useSelector((state) => state.products.categoryFilter);
   // console.log(categoryFilter);
 
-  const { ratingFilter } = useSelector((state) => state.products);
+  const ratingFilter = useSelector((state) => state.products.ratingFilter);
   // console.log(ratingFilter);
 
-  const { sortByPrice } = useSelector((state) => state.products);
+  const sortByPrice = useSelector((state) => state.products.sortByPrice);
   // console.log(sortByPrice);
 
   const categories = useSelector((state) => {
     return state.categories.categories;
   });
   // console.log(categories);
+
+  const filterByPriceRange = products.filter(
+    (product) =>
+      product.sellingPrice >= minPrice && product.sellingPrice <= maxPrice
+  );
+  console.log(filterByPriceRange);
+
+  const handlePriceRange = (e) => {
+    dispatch(setPriceRangeFilter(e.target.value));
+  };
 
   const handleCheckbox = (e) => {
     const { value, checked } = e.target;
@@ -53,14 +71,14 @@ const ProductsView = () => {
     }
   };
 
-  const filterByCategory = products?.filter((product) =>
+  const filterByCategory = filterByPriceRange?.filter((product) =>
     categoryFilter.includes(product.category.categoryName)
   );
 
   const filterByRating = filterByCategory?.filter(
     (product) => product.rating >= ratingFilter
   );
-  console.log(filterByRating);
+  // console.log(filterByRating);
 
   const handleSort = (e) => {
     dispatch(setSortByPriceFilter(e.target.value));
@@ -69,13 +87,17 @@ const ProductsView = () => {
   const sortByPriceFilter = filterByRating.sort((a, b) =>
     sortByPrice === 'lowToHigh'
       ? a.sellingPrice - b.sellingPrice
-      : b.sellinPrice - a.sellingPrice
+      : b.sellingPrice - a.sellingPrice
   );
-  console.log(sortByPriceFilter);
+  // console.log(sortByPriceFilter);
 
   useEffect(() => {
     dispatch(setCategoryFilter([...categoryFilter, item.categoryName]));
   }, []);
+
+  useEffect(() => {
+    dispatch(setPriceRangeFilter(maxPrice));
+  }, [maxPrice]);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -101,19 +123,20 @@ const ProductsView = () => {
               </div>
               <div className="my-3">
                 <h6>Price</h6>
-                <span>{}</span>
+                <span>{priceRange || minPrice}</span>
                 <input
                   type="range"
                   className="form-range"
-                  min="50"
-                  max="1000"
-                  step="50"
                   id="priceRange"
+                  min={minPrice}
+                  max={maxPrice}
+                  value={priceRange}
+                  step="10"
+                  onChange={handlePriceRange}
                 />
                 <div className="d-flex justify-content-between">
-                  <span>50</span>
-                  <span>500</span>
-                  <span>1000</span>
+                  <span>{minPrice}</span>
+                  <span>{maxPrice}</span>
                 </div>
               </div>
               <div>
@@ -190,33 +213,36 @@ const ProductsView = () => {
                   <>
                     {sortByPriceFilter?.map((product) => (
                       <div className="col-md-4" key={product._id}>
-                        <Link
-                          style={{ textDecoration: 'none' }}
-                          to={`/products/${product._id}`}
-                        >
-                          <div className="card mb-3">
+                        <div className="card mb-3">
+                          <Link
+                            style={{ textDecoration: 'none' }}
+                            to={`/products/${product._id}`}
+                          >
                             <img
                               src={product.imageUrl}
                               className="rounded img-fluid"
                               alt={product.productTitle}
                             />
-                            <div className="card-body text-center">
-                              <h5>{product.productTitle}</h5>
-                              <div className="d-flex justify-content-between">
-                                <p>₹ {product.sellingPrice}</p>
-                                <p>{product.netWeight}g</p>
-                              </div>
-                              <div className="mt-3">
-                                <button className="card-link btn btn-danger">
-                                  Add to Cart
-                                </button>
-                                <button className="card-link btn btn-primary">
-                                  Add to Wishlist
-                                </button>
-                              </div>
+                          </Link>
+                          <div className="card-body text-center">
+                            <h5>{product.productTitle}</h5>
+                            <div className="d-flex justify-content-between mx-5">
+                              <p>₹ {product.sellingPrice}</p>
+                              <p>{product.netWeight}g</p>
+                            </div>
+                            <div className="mt-3">
+                              <button
+                                className="card-link btn"
+                                style={{ backgroundColor: '#fbbf24' }}
+                              >
+                                Add to Cart
+                              </button>
+                              <button className="card-link btn btn-primary">
+                                Add to Wishlist
+                              </button>
                             </div>
                           </div>
-                        </Link>
+                        </div>
                       </div>
                     ))}
                   </>

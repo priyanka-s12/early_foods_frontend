@@ -27,7 +27,9 @@ const productsSlice = createSlice({
     products: [],
     status: 'idle',
     error: null,
-    priceRange: [50, 1000],
+    maxPrice: 0,
+    minPrice: 0,
+    priceRange: 0,
     categoryFilter: [],
     ratingFilter: 0,
     sortByPrice: '',
@@ -49,6 +51,7 @@ const productsSlice = createSlice({
       state.categoryFilter = [];
       state.ratingFilter = 0;
       state.sortByPrice = '';
+      window.location.reload();
     },
   },
   extraReducers: (builder) => {
@@ -57,6 +60,18 @@ const productsSlice = createSlice({
     });
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
       state.status = 'success';
+      const max = action.payload.reduce(
+        (acc, curr) => (curr.sellingPrice > acc ? curr.sellingPrice : acc),
+        action.payload[0].sellingPrice
+      );
+
+      const min = action.payload.reduce(
+        (acc, curr) => (curr.sellingPrice < acc ? curr.sellingPrice : acc),
+        action.payload[0].sellingPrice
+      );
+
+      state.maxPrice = max;
+      state.minPrice = min;
       state.products = action.payload;
     });
     builder.addCase(fetchProducts.rejected, (state, action) => {
@@ -85,4 +100,5 @@ export const {
   setSortByPriceFilter,
   clearAllFilters,
 } = productsSlice.actions;
+
 export default productsSlice.reducer;

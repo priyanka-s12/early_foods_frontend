@@ -25,33 +25,33 @@ const NewlyAddedProducts = () => {
         <div className="row">
           {lastFourProducts?.map((product) => (
             <div className="col-md-3" key={product._id}>
-              <Link
-                style={{ textDecoration: 'none' }}
-                to={`/products/${product._id}`}
-              >
-                <div className="card mb-3">
+              <div className="card mb-3">
+                <Link
+                  style={{ textDecoration: 'none' }}
+                  to={`/products/${product._id}`}
+                >
                   <img
                     src={product.imageUrl}
                     className="rounded img-fluid"
                     alt={product.productTitle}
                   />
-                  <div className="card-body text-center">
-                    <h5>{product.productTitle}</h5>
-                    <div className="d-flex justify-content-between">
-                      <p>₹ {product.sellingPrice}</p>
-                      <p>{product.netWeight}g</p>
-                    </div>
-                    <div className="mt-3">
-                      <button className="card-link btn btn-danger">
-                        Add to Cart
-                      </button>
-                      <button className="card-link btn btn-primary">
-                        Add to Wishlist
-                      </button>
-                    </div>
+                </Link>
+                <div className="card-body text-center">
+                  <h5>{product.productTitle}</h5>
+                  <div className="d-flex justify-content-between">
+                    <p>₹ {product.sellingPrice}</p>
+                    <p>{product.netWeight}g</p>
+                  </div>
+                  <div className="mt-3">
+                    <button className="card-link btn btn-danger">
+                      Add to Cart
+                    </button>
+                    <button className="card-link btn btn-primary">
+                      Add to Wishlist
+                    </button>
                   </div>
                 </div>
-              </Link>
+              </div>
             </div>
           ))}
         </div>
