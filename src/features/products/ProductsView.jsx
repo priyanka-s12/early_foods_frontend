@@ -47,11 +47,11 @@ const ProductsView = () => {
   });
   // console.log(categories);
 
-  const filterByPriceRange = products.filter(
+  const filterByPriceRange = products?.filter(
     (product) =>
-      product.sellingPrice >= minPrice && product.sellingPrice <= maxPrice
+      product.sellingPrice >= minPrice && product.sellingPrice <= priceRange
   );
-  console.log(filterByPriceRange);
+  // console.log(filterByPriceRange);
 
   const handlePriceRange = (e) => {
     dispatch(setPriceRangeFilter(e.target.value));
@@ -212,7 +212,7 @@ const ProductsView = () => {
                 {sortByPriceFilter?.length > 0 ? (
                   <>
                     {sortByPriceFilter?.map((product) => (
-                      <div className="col-md-4" key={product._id}>
+                      <div className="col-sm-6 col-md-4" key={product._id}>
                         <div className="card mb-3">
                           <Link
                             style={{ textDecoration: 'none' }}
