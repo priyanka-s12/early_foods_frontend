@@ -43,7 +43,10 @@ const NewlyAddedProducts = () => {
                     <p>{product.netWeight}g</p>
                   </div>
                   <div className="mt-3">
-                    <button className="card-link btn btn-danger">
+                    <button
+                      className="card-link btn"
+                      style={{ backgroundColor: '#fbbf24' }}
+                    >
                       Add to Cart
                     </button>
                     <button className="card-link btn btn-primary">

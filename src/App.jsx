@@ -29,12 +29,6 @@ function App() {
           <h3 className="text-center mb-5">Newly Added Products</h3>
           <NewlyAddedProducts />
         </section>
-
-        <section className="my-5">
-          <div className="text-center">
-            <Link to="/products">View All Products</Link>
-          </div>
-        </section>
       </main>
       <Footer />
     </>

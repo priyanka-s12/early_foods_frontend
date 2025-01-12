@@ -39,12 +39,15 @@ const ProductDetails = () => {
                       alt={findProduct.imageUrl}
                     />
                     <div className="mt-3 text-center">
-                      <Link className="card-link btn btn-danger">
+                      <button
+                        className="card-link btn"
+                        style={{ backgroundColor: '#fbbf24' }}
+                      >
                         Add to Cart
-                      </Link>
-                      <Link className="card-link btn btn-primary">
+                      </button>
+                      <button className="card-link btn btn-primary">
                         Add to Wishlist
-                      </Link>
+                      </button>
                     </div>
                   </div>
                   <div className="col-md-8">
@@ -54,7 +57,7 @@ const ProductDetails = () => {
                       </h2>
                       <div className="d-flex justify-content-between">
                         <h6>Rating: {findProduct.rating}</h6>
-                        <h6>
+                        <h6 className="">
                           Number of Reviews: {findProduct.numberOfReviews}
                         </h6>
                       </div>

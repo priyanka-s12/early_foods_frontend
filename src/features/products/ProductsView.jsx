@@ -12,13 +12,17 @@ import {
 import { fetchCategories } from '../category/categorySlice';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 const ProductsView = () => {
   const dispatch = useDispatch();
 
+  const { categoryId } = useParams();
+  console.log(categoryId);
+
   const location = useLocation();
   const { state: item } = location;
+  console.log(location);
 
   // state variables
   const products = useSelector((state) => state.products.products);
@@ -82,7 +86,7 @@ const ProductsView = () => {
 
   useEffect(() => {
     dispatch(setCategoryFilter([...categoryFilter, item.categoryName]));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(setPriceRangeFilter(maxPrice));
