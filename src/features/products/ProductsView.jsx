@@ -34,28 +34,19 @@ const ProductsView = () => {
   const minPrice = useSelector((state) => state.products.minPrice);
 
   const categoryFilter = useSelector((state) => state.products.categoryFilter);
-  // console.log(categoryFilter);
 
   const ratingFilter = useSelector((state) => state.products.ratingFilter);
-  // console.log(ratingFilter);
 
   const sortByPrice = useSelector((state) => state.products.sortByPrice);
-  // console.log(sortByPrice);
 
   const categories = useSelector((state) => {
     return state.categories.categories;
   });
-  // console.log(categories);
 
   const filterByPriceRange = products?.filter(
     (product) =>
       product.sellingPrice >= minPrice && product.sellingPrice <= priceRange
   );
-  // console.log(filterByPriceRange);
-
-  const handlePriceRange = (e) => {
-    dispatch(setPriceRangeFilter(e.target.value));
-  };
 
   const handleCheckbox = (e) => {
     const { value, checked } = e.target;
@@ -78,7 +69,6 @@ const ProductsView = () => {
   const filterByRating = filterByCategory?.filter(
     (product) => product.rating >= ratingFilter
   );
-  // console.log(filterByRating);
 
   const handleSort = (e) => {
     dispatch(setSortByPriceFilter(e.target.value));
@@ -89,7 +79,6 @@ const ProductsView = () => {
       ? a.sellingPrice - b.sellingPrice
       : b.sellingPrice - a.sellingPrice
   );
-  // console.log(sortByPriceFilter);
 
   useEffect(() => {
     dispatch(setCategoryFilter([...categoryFilter, item.categoryName]));
@@ -132,7 +121,9 @@ const ProductsView = () => {
                   max={maxPrice}
                   value={priceRange}
                   step="10"
-                  onChange={handlePriceRange}
+                  onChange={(e) =>
+                    dispatch(setPriceRangeFilter(e.target.value))
+                  }
                 />
                 <div className="d-flex justify-content-between">
                   <span>{minPrice}</span>
