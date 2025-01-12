@@ -123,7 +123,7 @@ const ProductsView = () => {
               </div>
               <div className="my-3">
                 <h6>Price</h6>
-                <span>{priceRange || minPrice}</span>
+                <span>{priceRange}</span>
                 <input
                   type="range"
                   className="form-range"
