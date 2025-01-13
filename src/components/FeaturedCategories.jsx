@@ -6,14 +6,13 @@ import { Link } from 'react-router-dom';
 const FeaturedCategories = () => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => {
-    console.log(state.categories);
     return state.categories.categories;
   });
   const status = useSelector((state) => state.categories.status);
   const error = useSelector((state) => state.categories.error);
 
   const fourFeatured = categories?.slice(0, 4);
-  console.log(fourFeatured);
+  // console.log(fourFeatured);
 
   useEffect(() => {
     dispatch(fetchCategories());

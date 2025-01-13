@@ -12,17 +12,10 @@ import {
 import { fetchCategories } from '../category/categorySlice';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const ProductsView = () => {
   const dispatch = useDispatch();
-
-  const { categoryId } = useParams();
-  console.log(categoryId);
-
-  const location = useLocation();
-  const { state: item } = location;
-  console.log(location);
 
   // state variables
   const products = useSelector((state) => state.products.products);
@@ -31,21 +24,35 @@ const ProductsView = () => {
   // console.log(products);
 
   const priceRange = useSelector((state) => state.products.priceRange);
-  console.log(priceRange);
+  // console.log(priceRange);
 
   const maxPrice = useSelector((state) => state.products.maxPrice);
 
   const minPrice = useSelector((state) => state.products.minPrice);
 
+  const categories = useSelector((state) => {
+    return state.categories.categories;
+  });
+  // console.log(categories);
+
   const categoryFilter = useSelector((state) => state.products.categoryFilter);
+  console.log(categoryFilter);
 
   const ratingFilter = useSelector((state) => state.products.ratingFilter);
 
   const sortByPrice = useSelector((state) => state.products.sortByPrice);
 
-  const categories = useSelector((state) => {
-    return state.categories.categories;
-  });
+  const location = useLocation();
+  const { state: item, pathname } = location;
+  // console.log(location, pathname, item);
+
+  pathname !== '/products'
+    ? useEffect(() => {
+        dispatch(setCategoryFilter([...categoryFilter, item.categoryName]));
+      }, [])
+    : useEffect(() => {
+        dispatch(setCategoryFilter([...item]));
+      }, []);
 
   const filterByPriceRange = products?.filter(
     (product) =>
@@ -83,10 +90,6 @@ const ProductsView = () => {
       ? a.sellingPrice - b.sellingPrice
       : b.sellingPrice - a.sellingPrice
   );
-
-  useEffect(() => {
-    dispatch(setCategoryFilter([...categoryFilter, item.categoryName]));
-  }, [dispatch]);
 
   useEffect(() => {
     dispatch(setPriceRangeFilter(maxPrice));

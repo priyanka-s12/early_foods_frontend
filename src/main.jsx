@@ -19,6 +19,7 @@ const router = createBrowserRouter([
     element: <ProductsView />,
   },
   { path: '/products/:productId', element: <ProductDetails /> },
+  { path: '/products', element: <ProductsView /> },
 ]);
 createRoot(document.getElementById('root')).render(
   <StrictMode>

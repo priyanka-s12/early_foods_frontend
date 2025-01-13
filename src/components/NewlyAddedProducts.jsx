@@ -6,14 +6,13 @@ import { Link } from 'react-router-dom';
 const NewlyAddedProducts = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => {
-    console.log(state.products);
     return state.products.products;
   });
   const status = useSelector((state) => state.products.status);
   const error = useSelector((state) => state.products.error);
 
   const lastFourProducts = products.slice(-4);
-  console.log(lastFourProducts);
+  // console.log(lastFourProducts);
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
