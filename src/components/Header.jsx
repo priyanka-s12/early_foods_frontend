@@ -1,13 +1,19 @@
-import { Link, NavLink } from 'react-router-dom';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { setSearchTitle } from '../features/products/productsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Header = () => {
-  const [title, setTitle] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const searchTitle = useSelector((state) => state.products.searchTitle);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(title);
+    // console.log(searchTitle);
+    navigate({
+      pathname: '/products/search',
+      search: `?q=${searchTitle}`,
+    });
   };
   return (
     <header className="">
@@ -43,7 +49,9 @@ const Header = () => {
                     type="search"
                     placeholder="Search by product title..."
                     aria-label="Search"
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={(e) =>
+                      dispatch(setSearchTitle(e.target.value.toLowerCase()))
+                    }
                   />
                 </div>
               </form>

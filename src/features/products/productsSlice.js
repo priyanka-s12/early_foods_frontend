@@ -33,6 +33,7 @@ const productsSlice = createSlice({
     categoryFilter: [],
     ratingFilter: 0,
     sortByPrice: '',
+    searchTitle: '',
   },
   reducers: {
     setPriceRangeFilter: (state, action) => {
@@ -52,6 +53,9 @@ const productsSlice = createSlice({
       state.ratingFilter = 0;
       state.sortByPrice = '';
       window.location.reload();
+    },
+    setSearchTitle: (state, action) => {
+      state.searchTitle = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -99,6 +103,7 @@ export const {
   setRatingFilter,
   setSortByPriceFilter,
   clearAllFilters,
+  setSearchTitle,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

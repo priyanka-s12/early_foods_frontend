@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import store from './app/store';
 import ProductsView from './features/products/ProductsView';
 import ProductDetails from './pages/ProductDetails';
+import Search from './pages/Search';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
   },
   { path: '/products/:productId', element: <ProductDetails /> },
   { path: '/products', element: <ProductsView /> },
+  { path: '/products/search', element: <Search /> },
 ]);
 createRoot(document.getElementById('root')).render(
   <StrictMode>
