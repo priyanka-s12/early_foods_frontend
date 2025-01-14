@@ -10,10 +10,7 @@ const Header = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     // console.log(searchTitle);
-    navigate({
-      pathname: '/products/search',
-      search: `?q=${searchTitle}`,
-    });
+    navigate(`/products/search/q=${searchTitle}`);
   };
   return (
     <header className="">

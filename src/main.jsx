@@ -21,7 +21,7 @@ const router = createBrowserRouter([
   },
   { path: '/products/:productId', element: <ProductDetails /> },
   { path: '/products', element: <ProductsView /> },
-  { path: '/products/search', element: <Search /> },
+  { path: '/products/search/:q', element: <Search /> },
 ]);
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -1,14 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-// import { useSearchParams } from 'react-router-dom';
 import { fetchProducts } from '../features/products/productsSlice';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 const Search = () => {
-  //   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
-
   const products = useSelector((state) => {
     return state.products.products;
   });
@@ -16,9 +13,6 @@ const Search = () => {
   const error = useSelector((state) => state.products.error);
   console.log(products);
   const searchTitle = useSelector((state) => state.products.searchTitle);
-  //   const title = searchParams.get('q');
-  //   console.log(searchTitle);
-  //   console.log(title);
 
   const filteredDataByTitle =
     searchTitle &&
