@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const fetchProducts = createAsyncThunk(
-  'products/fetchProducts',
+export const fetchProductsAsync = createAsyncThunk(
+  'products/fetchProductsAsync',
   async () => {
     const response = await axios.get(
       'https://early-foods-backend.vercel.app/api/products'
     );
+    console.log(response);
     return response.data;
   }
 );
@@ -17,6 +18,18 @@ export const fetchProductById = createAsyncThunk(
     const response = await axios.get(
       `https://early-foods-backend.vercel.app/api/products/${productId}`
     );
+    console.log(response);
+    return response.data;
+  }
+);
+
+export const searchProductByTitleAsync = createAsyncThunk(
+  'products/searchProductByTitleAsync',
+  async (title) => {
+    const response = await axios.get(
+      `https://early-foods-backend.vercel.app/api/products/search/${title}`
+    );
+    console.log(response);
     return response.data;
   }
 );
@@ -33,7 +46,6 @@ const productsSlice = createSlice({
     categoryFilter: [],
     ratingFilter: 0,
     sortByPrice: '',
-    searchTitle: '',
   },
   reducers: {
     setPriceRangeFilter: (state, action) => {
@@ -54,15 +66,12 @@ const productsSlice = createSlice({
       state.sortByPrice = '';
       window.location.reload();
     },
-    setSearchTitle: (state, action) => {
-      state.searchTitle = action.payload;
-    },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchProducts.pending, (state) => {
+    builder.addCase(fetchProductsAsync.pending, (state) => {
       state.status = 'loading';
     });
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
+    builder.addCase(fetchProductsAsync.fulfilled, (state, action) => {
       state.status = 'success';
       const max = action.payload.reduce(
         (acc, curr) => (curr.sellingPrice > acc ? curr.sellingPrice : acc),
@@ -78,7 +87,7 @@ const productsSlice = createSlice({
       state.minPrice = min;
       state.products = action.payload;
     });
-    builder.addCase(fetchProducts.rejected, (state, action) => {
+    builder.addCase(fetchProductsAsync.rejected, (state, action) => {
       state.status = 'error';
       state.error = action.payload.error;
     });
@@ -91,6 +100,18 @@ const productsSlice = createSlice({
       state.products = action.payload;
     });
     builder.addCase(fetchProductById.rejected, (state, action) => {
+      state.status = 'error';
+      state.error = action.payload.error;
+    });
+
+    builder.addCase(searchProductByTitleAsync.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(searchProductByTitleAsync.fulfilled, (state, action) => {
+      state.status = 'success';
+      state.products = action.payload;
+    });
+    builder.addCase(searchProductByTitleAsync.rejected, (state, action) => {
       state.status = 'error';
       state.error = action.payload.error;
     });

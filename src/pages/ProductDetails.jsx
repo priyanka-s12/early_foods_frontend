@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useEffect } from 'react';
-import { fetchProducts } from '../features/products/productsSlice';
+import { fetchProductsAsync } from '../features/products/productsSlice';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ const ProductDetails = () => {
   const findProduct = products.find((product) => product._id === productId);
   // console.log(findProduct);
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProductsAsync());
   }, [productId]);
   return (
     <>

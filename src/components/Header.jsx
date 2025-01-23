@@ -1,16 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { setSearchTitle } from '../features/products/productsSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { useState } from 'react';
 const Header = () => {
-  const dispatch = useDispatch();
+  const [searchTitle, setSearchTitle] = useState('');
   const navigate = useNavigate();
-  const searchTitle = useSelector((state) => state.products.searchTitle);
+  const userId = '678661161046fcf9a4996dd5';
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // console.log(searchTitle);
-    navigate(`/products/search/q=${searchTitle}`);
+    navigate(`/products/search/${searchTitle}`);
   };
   return (
     <header className="">
@@ -46,24 +45,32 @@ const Header = () => {
                     type="search"
                     placeholder="Search by product title..."
                     aria-label="Search"
-                    onChange={(e) =>
-                      dispatch(setSearchTitle(e.target.value.toLowerCase()))
-                    }
+                    onChange={(e) => setSearchTitle(e.target.value)}
                   />
                 </div>
               </form>
             </ul>
             <div className="w-25 mt-3 d-flex justify-content-evenly">
-              {/* <div className="d-flex justify-content-evenly"> */}
-              <button type="button" className="btn btn-secondary">
+              <Link
+                type="button"
+                className="btn btn-secondary"
+                to={`/account/${userId}`}
+              >
                 <i className="bi bi-person me-2"></i>
                 Account
-              </button>
-              <i
-                className="bi bi-suit-heart"
-                style={{ fontSize: '1.5rem' }}
-              ></i>
-              <i className="bi bi-cart2" style={{ fontSize: '1.5rem' }}></i>
+              </Link>
+              <Link>
+                <i
+                  className="bi bi-suit-heart"
+                  style={{ fontSize: '1.5rem', color: 'grey' }}
+                ></i>
+              </Link>
+              <Link>
+                <i
+                  className="bi bi-cart2"
+                  style={{ fontSize: '1.5rem', color: 'grey' }}
+                ></i>
+              </Link>
             </div>
             {/* </div> */}
           </div>

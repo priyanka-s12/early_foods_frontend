@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchProducts } from '../features/products/productsSlice';
+import { fetchProductsAsync } from '../features/products/productsSlice';
 import { Link } from 'react-router-dom';
 
 const NewlyAddedProducts = () => {
@@ -14,7 +14,7 @@ const NewlyAddedProducts = () => {
   const lastFourProducts = products.slice(-4);
   // console.log(lastFourProducts);
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProductsAsync());
   }, []);
   return (
     <main>

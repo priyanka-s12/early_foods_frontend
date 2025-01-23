@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const fetchCategories = createAsyncThunk(
-  'categories/fetchCategories',
+export const fetchCategoriesAsync = createAsyncThunk(
+  'categories/fetchCategoriesAsync',
   async () => {
     const response = await axios.get(
       'https://early-foods-backend.vercel.app/api/categories'
@@ -12,8 +12,8 @@ export const fetchCategories = createAsyncThunk(
   }
 );
 
-export const fetchCategorybyId = createAsyncThunk(
-  'categories/fetchCategorybyId',
+export const fetchCategorybyIdAsync = createAsyncThunk(
+  'categories/fetchCategorybyIdAsync',
   async (categoryId) => {
     const response = await axios.get(
       `https://early-foods-backend.vercel.app/api/categories/${categoryId}`
@@ -32,26 +32,26 @@ const categorySlice = createSlice({
   reducers: {},
 
   extraReducers: (builder) => {
-    builder.addCase(fetchCategories.pending, (state) => {
+    builder.addCase(fetchCategoriesAsync.pending, (state) => {
       state.status = 'loading';
     });
-    builder.addCase(fetchCategories.fulfilled, (state, action) => {
+    builder.addCase(fetchCategoriesAsync.fulfilled, (state, action) => {
       state.status = 'success';
       state.categories = action.payload;
     });
-    builder.addCase(fetchCategories.rejected, (state, action) => {
+    builder.addCase(fetchCategoriesAsync.rejected, (state, action) => {
       state.status = 'error';
       state.error = action.payload.error;
     });
 
-    builder.addCase(fetchCategorybyId.pending, (state) => {
+    builder.addCase(fetchCategorybyIdAsync.pending, (state) => {
       state.status = 'loading';
     });
-    builder.addCase(fetchCategorybyId.fulfilled, (state, action) => {
+    builder.addCase(fetchCategorybyIdAsync.fulfilled, (state, action) => {
       state.status = 'success';
       state.categories = action.payload;
     });
-    builder.addCase(fetchCategorybyId.rejected, (state, action) => {
+    builder.addCase(fetchCategorybyIdAsync.rejected, (state, action) => {
       state.status = 'error';
       state.error = action.payload.error;
     });

@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchCategories } from '../features/category/categorySlice';
+import { fetchCategoriesAsync } from '../features/category/categorySlice';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ const FeaturedCategories = () => {
   // console.log(fourFeatured);
 
   useEffect(() => {
-    dispatch(fetchCategories());
+    dispatch(fetchCategoriesAsync());
   }, []);
   // console.log(categories, status);
   return (

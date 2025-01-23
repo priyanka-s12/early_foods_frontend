@@ -9,6 +9,9 @@ import store from './app/store';
 import ProductsView from './features/products/ProductsView';
 import ProductDetails from './pages/ProductDetails';
 import Search from './pages/Search';
+import Account from './features/user/Account';
+import Addresses from './pages/Addresses';
+import AddressForm from './pages/AddressForm';
 
 const router = createBrowserRouter([
   {
@@ -21,7 +24,11 @@ const router = createBrowserRouter([
   },
   { path: '/products/:productId', element: <ProductDetails /> },
   { path: '/products', element: <ProductsView /> },
-  { path: '/products/search/:q', element: <Search /> },
+  { path: '/products/search/:searchTitle', element: <Search /> },
+  { path: '/account/:userId', element: <Account /> },
+  { path: '/account/addresses', element: <Addresses /> },
+  { path: '/account/addresses/:addressId', element: <AddressForm /> },
+  { path: '/account/:userId/addresses/add', element: <AddressForm /> },
 ]);
 createRoot(document.getElementById('root')).render(
   <StrictMode>

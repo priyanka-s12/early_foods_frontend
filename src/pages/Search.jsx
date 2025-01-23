@@ -1,28 +1,24 @@
 import { useSelector, useDispatch } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { fetchProducts } from '../features/products/productsSlice';
+import { searchProductByTitleAsync } from '../features/products/productsSlice';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+
 const Search = () => {
+  const { searchTitle } = useParams();
+  // console.log(searchTitle);
   const dispatch = useDispatch();
   const products = useSelector((state) => {
     return state.products.products;
   });
   const status = useSelector((state) => state.products.status);
   const error = useSelector((state) => state.products.error);
-  console.log(products);
-  const searchTitle = useSelector((state) => state.products.searchTitle);
-
-  const filteredDataByTitle =
-    searchTitle &&
-    products?.filter((product) => {
-      return product.productTitle.toLowerCase().includes(searchTitle);
-    });
+  // console.log(products);
 
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, []);
+    dispatch(searchProductByTitleAsync(searchTitle));
+  }, [searchTitle]);
   return (
     <div>
       <Header />
@@ -33,11 +29,11 @@ const Search = () => {
 
         <div className="row">
           <p>
-            {filteredDataByTitle.length} results found for "{searchTitle}"
+            {products.length} results found for "{searchTitle}"
           </p>
-          {filteredDataByTitle.length > 0 ? (
+          {products.length > 0 ? (
             <>
-              {filteredDataByTitle.map((product) => (
+              {products.map((product) => (
                 <div className="col-md-3" key={product._id}>
                   <div className="card mb-3">
                     <Link

@@ -2,14 +2,14 @@ import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import {
-  fetchProducts,
+  fetchProductsAsync,
   setCategoryFilter,
   setRatingFilter,
   setSortByPriceFilter,
   setPriceRangeFilter,
   clearAllFilters,
 } from './productsSlice';
-import { fetchCategories } from '../category/categorySlice';
+import { fetchCategoriesAsync } from '../category/categorySlice';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -96,8 +96,8 @@ const ProductsView = () => {
   }, [maxPrice]);
 
   useEffect(() => {
-    dispatch(fetchProducts());
-    dispatch(fetchCategories());
+    dispatch(fetchProductsAsync());
+    dispatch(fetchCategoriesAsync());
   }, []);
 
   return (
