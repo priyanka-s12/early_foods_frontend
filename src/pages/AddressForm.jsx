@@ -24,6 +24,7 @@ const AddressForm = () => {
   });
 
   const [message, setMessage] = useState(false);
+  const userId = '678661161046fcf9a4996dd5';
   const dispatch = useDispatch();
   const location = useLocation();
   console.log(location);
@@ -54,7 +55,7 @@ const AddressForm = () => {
     e.preventDefault();
     console.log(formData);
 
-    const newAddress = { ...formData };
+    // const newAddress = { ...formData };
     if (existingAddress) {
       dispatch(updateAddressAsync({ _id: existingAddress._id, ...formData }));
       console.log(formData);
@@ -99,7 +100,7 @@ const AddressForm = () => {
           </p>
         )}
 
-        <Link to="/account/addresses">Return to Address Page</Link>
+        <Link to={`/account/addresses/${userId}`}>Return to Address Page</Link>
         <form onSubmit={handleSubmit}>
           <div className="col-md-6 mb-3 mt-3">
             <input

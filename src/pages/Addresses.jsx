@@ -9,8 +9,8 @@ import {
 import { useEffect, useState } from 'react';
 
 const Addresses = () => {
-  // const userId = '678661161046fcf9a4996dd5';
   const dispatch = useDispatch();
+  const userId = '678661161046fcf9a4996dd5';
 
   const [message, setMessage] = useState(false);
 
@@ -31,7 +31,17 @@ const Addresses = () => {
     <div>
       <Header />
       <main className="container py-3">
-        <h2 className="mb-3">My Addresses</h2>
+        <div className="d-flex justify-content-between">
+          <h2 className="mb-3">My Addresses</h2>
+
+          <Link
+            className="btn mb-3 btn-outline-primary"
+            // style={{ backgroundColor: '#fecdd3', color: '#4c0519' }}
+            to={`/account/addresses/add`}
+          >
+            Add New Address
+          </Link>
+        </div>
         {status === 'loading' && <p>Loading...</p>}
         {error && <p>{error}</p>}
         {message && <p className="alert alert-success">{message}</p>}
@@ -66,7 +76,7 @@ const Addresses = () => {
                     <div className="d-flex gap-2">
                       <Link
                         className="btn btn-outline-primary w-50"
-                        to={`/account/addresses/${userAddress._id}`}
+                        to={`/account/addresses/edit/${userAddress._id}`}
                         state={userAddress}
                       >
                         Edit
@@ -83,14 +93,6 @@ const Addresses = () => {
               </div>
             ))}
         </div>
-
-        <Link
-          className="btn"
-          style={{ backgroundColor: '#fecdd3', color: '#4c0519' }}
-          to={`/account/addresses/add`}
-        >
-          Add New Address
-        </Link>
       </main>
       <Footer />
     </div>

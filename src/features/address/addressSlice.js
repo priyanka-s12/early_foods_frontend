@@ -7,7 +7,7 @@ export const fetchAddresses = createAsyncThunk(
     const response = await axios.get(
       'https://early-foods-backend.vercel.app/api/addresses'
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   }
 );
@@ -19,7 +19,7 @@ export const addAddressAsync = createAsyncThunk(
       `https://early-foods-backend.vercel.app/api/addresses`,
       newAddress
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   }
 );
@@ -31,7 +31,7 @@ export const updateAddressAsync = createAsyncThunk(
       `https://early-foods-backend.vercel.app/api/addresses/${addressToUpdate._id}`,
       addressToUpdate
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   }
 );
@@ -42,8 +42,10 @@ export const deleteAddressAsync = createAsyncThunk(
     const response = await axios.delete(
       `https://early-foods-backend.vercel.app/api/addresses/${addressId}`
     );
-    console.log(response);
-    return response.data;
+    // console.log(response);
+    const data = response.data;
+    window.location.reload();
+    return data;
   }
 );
 const addressSlice = createSlice({

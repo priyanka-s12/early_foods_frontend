@@ -46,7 +46,7 @@ const Account = () => {
                   </div>
                   <Link
                     className="btn btn-outline-primary"
-                    to={`/account/addresses`}
+                    to={`/account/addresses/${userId}`}
                   >
                     Edit
                   </Link>

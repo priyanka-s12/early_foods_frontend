@@ -26,9 +26,9 @@ const router = createBrowserRouter([
   { path: '/products', element: <ProductsView /> },
   { path: '/products/search/:searchTitle', element: <Search /> },
   { path: '/account/:userId', element: <Account /> },
-  { path: '/account/addresses', element: <Addresses /> },
-  { path: '/account/addresses/:addressId', element: <AddressForm /> },
-  { path: '/account/:userId/addresses/add', element: <AddressForm /> },
+  { path: '/account/addresses/:userId', element: <Addresses /> },
+  { path: '/account/addresses/edit/:addressId', element: <AddressForm /> },
+  { path: '/account/addresses/add', element: <AddressForm /> },
 ]);
 createRoot(document.getElementById('root')).render(
   <StrictMode>
