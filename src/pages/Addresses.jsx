@@ -3,7 +3,7 @@ import Footer from '../components/Footer';
 import { useLocation, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  fetchAddresses,
+  fetchAddressesAsync,
   deleteAddressAsync,
 } from '../features/address/addressSlice';
 import { useEffect, useState } from 'react';
@@ -25,7 +25,7 @@ const Addresses = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchAddresses());
+    dispatch(fetchAddressesAsync());
   }, []);
   return (
     <div>

@@ -55,12 +55,12 @@ const ProductDetails = () => {
                       <h2 className="card-title mb-3">
                         {findProduct.productTitle}
                       </h2>
-                      <div className="d-flex justify-content-between">
-                        <h6>Rating: {findProduct.rating}</h6>
-                        <h6 className="">
-                          Number of Reviews: {findProduct.numberOfReviews}
-                        </h6>
-                      </div>
+
+                      <h6>Rating: {findProduct.rating}</h6>
+                      <h6 className="">
+                        Number of Reviews: {findProduct.numberOfReviews}
+                      </h6>
+
                       <p className="card-text">{findProduct.description}</p>
                       <h5>Ingredients: </h5>
                       <p className="card-text">{findProduct.ingredients}</p>

@@ -214,11 +214,7 @@ const AddressForm = () => {
           </div>
 
           <div className="mb-3 col-md-3">
-            <button
-              type="submit"
-              className="btn"
-              style={{ backgroundColor: '#fecdd3', color: '#4c0519' }}
-            >
+            <button type="submit" className="btn btn-primary">
               {existingAddress ? 'Update' : 'Add'} Address
             </button>
           </div>

@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const fetchAddresses = createAsyncThunk(
-  'address/fetchAddresses',
+export const fetchAddressesAsync = createAsyncThunk(
+  'address/fetchAddressesAsync',
   async () => {
     const response = await axios.get(
       'https://early-foods-backend.vercel.app/api/addresses'
@@ -57,14 +57,14 @@ const addressSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchAddresses.pending, (state) => {
+    builder.addCase(fetchAddressesAsync.pending, (state) => {
       state.status = 'loading';
     });
-    builder.addCase(fetchAddresses.fulfilled, (state, action) => {
+    builder.addCase(fetchAddressesAsync.fulfilled, (state, action) => {
       state.status = 'success';
       state.addresses = action.payload;
     });
-    builder.addCase(fetchAddresses.rejected, (state, action) => {
+    builder.addCase(fetchAddressesAsync.rejected, (state, action) => {
       state.status = 'error';
       state.error = action.payload.error;
     });

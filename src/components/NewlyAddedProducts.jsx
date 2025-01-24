@@ -37,6 +37,16 @@ const NewlyAddedProducts = () => {
                 </Link>
                 <div className="card-body text-center">
                   <h5>{product.productTitle}</h5>
+                  <div className="d-flex justify-content-between mt-3">
+                    <p></p>
+                    <p>
+                      <i
+                        className="bi bi-star-fill me-2"
+                        style={{ fontSize: '1rem', color: '#f1c40f' }}
+                      ></i>
+                      {product.rating} ({product.numberOfReviews})
+                    </p>
+                  </div>
                   <div className="d-flex justify-content-between">
                     <p>₹ {product.sellingPrice}</p>
                     <p>{product.netWeight}g</p>

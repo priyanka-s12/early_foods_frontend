@@ -50,16 +50,14 @@ const Header = () => {
                 </div>
               </form>
             </ul>
-            <div className="w-25 mt-3 d-flex justify-content-evenly">
-              <Link
-                type="button"
-                className="btn btn-secondary"
-                to={`/account/${userId}`}
-              >
-                <i className="bi bi-person me-2"></i>
-                Account
+            <div className="w-25 d-flex justify-content-evenly">
+              <Link to={`/account/${userId}`}>
+                <i
+                  className="bi bi-person me-2"
+                  style={{ fontSize: '1.5rem', color: 'grey' }}
+                ></i>
               </Link>
-              <Link>
+              <Link to={`/account/wishlist/${userId}`}>
                 <i
                   className="bi bi-suit-heart"
                   style={{ fontSize: '1.5rem', color: 'grey' }}
