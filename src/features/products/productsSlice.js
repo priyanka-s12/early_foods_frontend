@@ -7,7 +7,7 @@ export const fetchProductsAsync = createAsyncThunk(
     const response = await axios.get(
       'https://early-foods-backend.vercel.app/api/products'
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   }
 );

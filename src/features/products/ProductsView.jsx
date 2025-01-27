@@ -13,6 +13,7 @@ import { fetchCategoriesAsync } from '../category/categorySlice';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import ProductCard from '../../components/ProductCard';
 
 const ProductsView = () => {
   const dispatch = useDispatch();
@@ -211,7 +212,7 @@ const ProductsView = () => {
                   <>
                     {sortByPriceFilter?.map((product) => (
                       <div className="col-sm-6 col-md-4" key={product._id}>
-                        <div className="card mb-3">
+                        {/* <div className="card mb-3">
                           <Link
                             style={{ textDecoration: 'none' }}
                             to={`/products/${product._id}`}
@@ -250,7 +251,8 @@ const ProductsView = () => {
                               </button>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
+                        <ProductCard product={product} />
                       </div>
                     ))}
                   </>

@@ -3,13 +3,14 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useEffect } from 'react';
 import { fetchProductsAsync } from '../features/products/productsSlice';
+import { addToWishlistAsync } from '../features/wishlist/wishlistSlice';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
   const { productId } = useParams();
-  // console.log(productId);
+  console.log(productId);
 
   const products = useSelector((state) => {
     return state.products.products;
@@ -45,7 +46,17 @@ const ProductDetails = () => {
                       >
                         Add to Cart
                       </button>
-                      <button className="card-link btn btn-primary">
+                      <button
+                        className="card-link btn btn-primary"
+                        onClick={() =>
+                          dispatch(
+                            addToWishlistAsync({
+                              product: findProduct._id,
+                              user: '678661161046fcf9a4996dd5',
+                            })
+                          )
+                        }
+                      >
                         Add to Wishlist
                       </button>
                     </div>
@@ -56,10 +67,18 @@ const ProductDetails = () => {
                         {findProduct.productTitle}
                       </h2>
 
-                      <h6>Rating: {findProduct.rating}</h6>
+                      {/* <h6>Rating: {findProduct.rating}</h6>
                       <h6 className="">
                         Number of Reviews: {findProduct.numberOfReviews}
-                      </h6>
+                      </h6> */}
+                      <p>
+                        <i
+                          className="bi bi-star-fill me-2"
+                          style={{ fontSize: '1rem', color: '#f1c40f' }}
+                        ></i>
+                        {findProduct.rating} ({findProduct.numberOfReviews}{' '}
+                        Reviews)
+                      </p>
 
                       <p className="card-text">{findProduct.description}</p>
                       <h5>Ingredients: </h5>

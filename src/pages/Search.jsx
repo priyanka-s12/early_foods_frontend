@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { searchProductByTitleAsync } from '../features/products/productsSlice';
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import ProductCard from '../components/ProductCard';
 
 const Search = () => {
   const { searchTitle } = useParams();
@@ -34,8 +35,8 @@ const Search = () => {
           {products.length > 0 ? (
             <>
               {products.map((product) => (
-                <div className="col-md-3" key={product._id}>
-                  <div className="card mb-3">
+                <div className="col-sm-6 col-md-3" key={product._id}>
+                  {/* <div className="card mb-3">
                     <Link
                       style={{ textDecoration: 'none' }}
                       to={`/products/${product._id}`}
@@ -74,7 +75,8 @@ const Search = () => {
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
+                  <ProductCard product={product} />
                 </div>
               ))}
             </>

@@ -65,9 +65,16 @@ const Header = () => {
               </Link>
               <Link>
                 <i
-                  className="bi bi-cart2"
+                  className="bi bi-cart2 position-relative"
                   style={{ fontSize: '1.5rem', color: 'grey' }}
-                ></i>
+                >
+                  <span
+                    className="position-absolute top-0 start-100 badge rounded-pill text-bg-secondary translate-middle"
+                    style={{ fontSize: '0.7rem' }}
+                  >
+                    2
+                  </span>
+                </i>
               </Link>
             </div>
             {/* </div> */}

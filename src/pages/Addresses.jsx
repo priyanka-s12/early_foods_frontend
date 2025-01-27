@@ -12,7 +12,7 @@ const Addresses = () => {
   const dispatch = useDispatch();
   const userId = '678661161046fcf9a4996dd5';
 
-  const [message, setMessage] = useState(false);
+  const [message, setMessage] = useState('');
 
   const addresses = useSelector((state) => state.address.addresses);
   console.log(addresses);

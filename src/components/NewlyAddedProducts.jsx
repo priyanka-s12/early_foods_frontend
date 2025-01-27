@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchProductsAsync } from '../features/products/productsSlice';
-import { Link } from 'react-router-dom';
+import ProductCard from './ProductCard';
 
 const NewlyAddedProducts = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const NewlyAddedProducts = () => {
         <div className="row">
           {lastFourProducts?.map((product) => (
             <div className="col-md-3" key={product._id}>
-              <div className="card mb-3">
+              {/* <div className="card mb-3">
                 <Link
                   style={{ textDecoration: 'none' }}
                   to={`/products/${product._id}`}
@@ -63,7 +63,8 @@ const NewlyAddedProducts = () => {
                     </button>
                   </div>
                 </div>
-              </div>
+              </div> */}
+              <ProductCard product={product} />
             </div>
           ))}
         </div>
