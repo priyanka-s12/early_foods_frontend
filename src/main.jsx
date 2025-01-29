@@ -13,6 +13,7 @@ import Account from './features/user/Account';
 import Addresses from './pages/Addresses';
 import AddressForm from './pages/AddressForm';
 import Wishlist from './features/wishlist/Wishlist';
+import { Toaster } from 'react-hot-toast';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,7 @@ createRoot(document.getElementById('root')).render(
     <Provider store={store}>
       <RouterProvider router={router}>
         <App />
+        <Toaster />
       </RouterProvider>
     </Provider>
   </StrictMode>

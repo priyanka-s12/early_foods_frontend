@@ -10,22 +10,37 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userId = '678661161046fcf9a4996dd5';
+
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
-  console.log(wishlistItems);
+  console.log('Wishlist data: ', wishlistItems, wishlistItems.length);
+
+  const filtered = wishlistItems.filter((item) => item);
+  console.log('Filtered: ', filtered);
   // const totalWishlistItems = useSelector(
   //   (state) => state.wishlist?.totalWishlistItems
   // );
   // console.log(totalWishlistItems);
+
+  // const checkForUndefined = wishlistItems.filter((item) => item !== undefined);
+  // console.log('length without undefined: ', checkForUndefined);
+
+  useEffect(() => {
+    dispatch(fetchWishlistAsync());
+    // const totalWishlist = () => {
+    // dispatch(fetchWishlistAsync());
+    // totalWishlist = wishlistItems.length;
+    // };
+    // totalWishlist();
+  }, [dispatch]);
+
+  let totalWishlist;
 
   const submitHandler = (e) => {
     e.preventDefault();
     navigate(`/products/search/${searchTitle}`);
   };
 
-  useEffect(() => {
-    dispatch(fetchWishlistAsync());
-  }, [wishlistItems]);
-
+  totalWishlist = wishlistItems.length;
   return (
     <header className="">
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -81,7 +96,7 @@ const Header = () => {
                     className="position-absolute top-0 start-100 badge rounded-pill text-bg-secondary translate-middle"
                     style={{ fontSize: '0.7rem' }}
                   >
-                    {wishlistItems.length}
+                    {filtered.length}
                   </span>
                 </i>
               </Link>

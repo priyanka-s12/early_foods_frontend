@@ -7,6 +7,15 @@ const ProductCard = ({ product }) => {
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
   console.log(wishlistItems);
 
+  // const handleAddToCart = (product, user) => {
+  //   console.log('Product to add: ', product);
+  //   const addItem = wishlistItems.filter((item) => item.product !== undefined);
+  //   console.log(addItem);
+  // };
+
+  // const checkForUndefined = wishlistItems.filter((item) => item !== undefined);
+  // console.log('length without undefined: ', checkForUndefined);
+
   return (
     <div className="card mb-3">
       <Link style={{ textDecoration: 'none' }} to={`/products/${product._id}`}>
@@ -49,6 +58,12 @@ const ProductCard = ({ product }) => {
                 })
               )
             }
+            // onClick={() =>
+            //   handleAddToCart({
+            //     product: product._id,
+            //     user: '678661161046fcf9a4996dd5',
+            //   })
+            // }
           >
             Add to Wishlist
           </button>
