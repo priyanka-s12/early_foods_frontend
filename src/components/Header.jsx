@@ -16,7 +16,6 @@ const Header = () => {
   //   (state) => state.wishlist?.totalWishlistItems
   // );
   // console.log(totalWishlistItems);
-  let count;
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -25,12 +24,7 @@ const Header = () => {
 
   useEffect(() => {
     dispatch(fetchWishlistAsync());
-    const totalWishlist = () => {
-      dispatch(fetchWishlistAsync());
-      count = wishlistItems.length;
-    };
-    totalWishlist();
-  }, []);
+  }, [wishlistItems]);
 
   return (
     <header className="">
@@ -87,7 +81,7 @@ const Header = () => {
                     className="position-absolute top-0 start-100 badge rounded-pill text-bg-secondary translate-middle"
                     style={{ fontSize: '0.7rem' }}
                   >
-                    {count}
+                    {wishlistItems.length}
                   </span>
                 </i>
               </Link>
