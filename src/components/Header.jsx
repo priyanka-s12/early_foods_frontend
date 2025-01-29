@@ -16,8 +16,14 @@ const Header = () => {
   //   (state) => state.wishlist?.totalWishlistItems
   // );
   // console.log(totalWishlistItems);
+  let count;
 
-  const totalWishlist = wishlistItems.length;
+  const totalWishlist = () => {
+    dispatch(fetchWishlistAsync());
+    count = wishlistItems.length;
+  };
+
+  totalWishlist();
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -83,7 +89,7 @@ const Header = () => {
                     className="position-absolute top-0 start-100 badge rounded-pill text-bg-secondary translate-middle"
                     style={{ fontSize: '0.7rem' }}
                   >
-                    {totalWishlist}
+                    {count}
                   </span>
                 </i>
               </Link>
