@@ -20,7 +20,6 @@ export const addToWishlistAsync = createAsyncThunk(
       newItem
     );
     // console.log(response.data.message);
-    alert(response.data.message);
     return response.data;
   }
 );
@@ -69,8 +68,12 @@ const wishlistSlice = createSlice({
     builder.addCase(addToWishlistAsync.fulfilled, (state, action) => {
       state.status = 'success';
       console.log('wishlist: ', action.payload);
-      if (!action.payload.message) {
+      if (action.payload.message) {
+        alert(action.payload.message);
+        return state;
+      } else {
         state.wishlistItems.push(action.payload);
+        alert(action.payload.message);
       }
     });
     builder.addCase(addToWishlistAsync.rejected, (state, action) => {
