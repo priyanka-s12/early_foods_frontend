@@ -69,25 +69,9 @@ const wishlistSlice = createSlice({
     builder.addCase(addToWishlistAsync.fulfilled, (state, action) => {
       state.status = 'success';
       console.log('wishlist: ', action.payload);
-      // console.log('wishlist data: ', action.payload.wishlist.product);
-
-      // const existingItem = state.wishlistItems.find(
-      //   (wish) => wish.product?._id == action.payload.wishlist.product
-      // );
-      // console.log(existingItem);
-
-      // if (existingItem) {
-      //   alert('Item is already present in the wishlist');
-      //   return;
-      // } else {
-      //   state.wishlistItems.push({ ...action.payload });
-      // }
-      // if (existingItem === -1) {
-      //   state.wishlistItems.push(action.payload);
-      //   alert('Item added to wishlist.');
-      // } else {
-      //   alert('Product is already present in the wishlist.');
-      // }
+      if (!action.payload.message) {
+        state.wishlistItems.push(action.payload);
+      }
     });
     builder.addCase(addToWishlistAsync.rejected, (state, action) => {
       state.status = 'error';
@@ -111,5 +95,5 @@ const wishlistSlice = createSlice({
   },
 });
 
-export const { clearAll } = wishlistSlice.actions;
+export const { clearAll, updateWishlistCount } = wishlistSlice.actions;
 export default wishlistSlice.reducer;

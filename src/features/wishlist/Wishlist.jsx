@@ -43,7 +43,7 @@ const Wishlist = () => {
 
             <div className="row">
               {wishlistItems?.map((wish) => (
-                <div className="col-sm-6 col-md-3" key={wish._id}>
+                <div className="col-sm-6 col-md-3" key={wish?._id}>
                   <div className="card mb-3">
                     <Link to={`/products/${wish.product?._id}`}>
                       <img

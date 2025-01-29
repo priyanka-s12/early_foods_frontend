@@ -1,16 +1,33 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { setSearchTitle } from '../features/products/productsSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import {
+  fetchWishlistAsync,
+  updateWishlistCount,
+} from '../features/wishlist/wishlistSlice';
 const Header = () => {
   const [searchTitle, setSearchTitle] = useState('');
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const userId = '678661161046fcf9a4996dd5';
+  const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
+  console.log(wishlistItems);
+  // const totalWishlistItems = useSelector(
+  //   (state) => state.wishlist?.totalWishlistItems
+  // );
+  // console.log(totalWishlistItems);
+
+  const totalWishlist = wishlistItems.length;
 
   const submitHandler = (e) => {
     e.preventDefault();
     navigate(`/products/search/${searchTitle}`);
   };
+
+  useEffect(() => {
+    dispatch(fetchWishlistAsync());
+  }, []);
+
   return (
     <header className="">
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -59,9 +76,16 @@ const Header = () => {
               </Link>
               <Link to={`/account/wishlist/${userId}`}>
                 <i
-                  className="bi bi-suit-heart"
+                  className="bi bi-suit-heart position-relative"
                   style={{ fontSize: '1.5rem', color: 'grey' }}
-                ></i>
+                >
+                  <span
+                    className="position-absolute top-0 start-100 badge rounded-pill text-bg-secondary translate-middle"
+                    style={{ fontSize: '0.7rem' }}
+                  >
+                    {totalWishlist}
+                  </span>
+                </i>
               </Link>
               <Link>
                 <i
@@ -77,7 +101,6 @@ const Header = () => {
                 </i>
               </Link>
             </div>
-            {/* </div> */}
           </div>
         </div>
       </nav>

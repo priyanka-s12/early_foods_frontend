@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { addToWishlistAsync } from '../features/wishlist/wishlistSlice';
+import { useEffect } from 'react';
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
+  const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
+  console.log(wishlistItems);
+
   return (
     <div className="card mb-3">
       <Link style={{ textDecoration: 'none' }} to={`/products/${product._id}`}>
