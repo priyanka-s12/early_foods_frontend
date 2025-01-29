@@ -18,13 +18,6 @@ const Header = () => {
   // console.log(totalWishlistItems);
   let count;
 
-  const totalWishlist = () => {
-    dispatch(fetchWishlistAsync());
-    count = wishlistItems.length;
-  };
-
-  totalWishlist();
-
   const submitHandler = (e) => {
     e.preventDefault();
     navigate(`/products/search/${searchTitle}`);
@@ -32,6 +25,11 @@ const Header = () => {
 
   useEffect(() => {
     dispatch(fetchWishlistAsync());
+    const totalWishlist = () => {
+      dispatch(fetchWishlistAsync());
+      count = wishlistItems.length;
+    };
+    totalWishlist();
   }, []);
 
   return (
