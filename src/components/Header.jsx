@@ -1,10 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import {
-  fetchWishlistAsync,
-  updateWishlistCount,
-} from '../features/wishlist/wishlistSlice';
+import { fetchWishlistAsync } from '../features/wishlist/wishlistSlice';
 const Header = () => {
   const [searchTitle, setSearchTitle] = useState('');
   const dispatch = useDispatch();
@@ -14,35 +11,17 @@ const Header = () => {
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
   console.log('Wishlist data: ', wishlistItems, wishlistItems.length);
 
-  const filtered = wishlistItems.filter((item) => item);
-  console.log('Filtered: ', filtered);
-  // const totalWishlistItems = useSelector(
-  //   (state) => state.wishlist?.totalWishlistItems
-  // );
-  // console.log(totalWishlistItems);
-
-  // const checkForUndefined = wishlistItems.filter((item) => item !== undefined);
-  // console.log('length without undefined: ', checkForUndefined);
-
   useEffect(() => {
     dispatch(fetchWishlistAsync());
-    // const totalWishlist = () => {
-    // dispatch(fetchWishlistAsync());
-    // totalWishlist = wishlistItems.length;
-    // };
-    // totalWishlist();
-  }, [dispatch]);
-
-  let totalWishlist;
+  }, []);
 
   const submitHandler = (e) => {
     e.preventDefault();
     navigate(`/products/search/${searchTitle}`);
   };
 
-  totalWishlist = wishlistItems.length;
   return (
-    <header className="">
+    <header>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container">
           <Link
@@ -96,7 +75,7 @@ const Header = () => {
                     className="position-absolute top-0 start-100 badge rounded-pill text-bg-secondary translate-middle"
                     style={{ fontSize: '0.7rem' }}
                   >
-                    {filtered.length}
+                    {wishlistItems.length}
                   </span>
                 </i>
               </Link>

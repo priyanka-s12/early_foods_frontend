@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import FeaturedCategories from './components/FeaturedCategories';
 import NewlyAddedProducts from './components/NewlyAddedProducts';
 import { useSelector, useDispatch } from 'react-redux';
+
 function App() {
   const sliderImages = [
     'https://m.media-amazon.com/images/S/stores-image-uploads-eu-prod/f/AmazonStores/A21TJRUUN4KGV/3613d5cf330a89dff7529ee3ce38ee50.w3000.h600._CR0%2C0%2C3000%2C600_SX1920_.png',

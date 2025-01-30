@@ -37,7 +37,10 @@ const Wishlist = () => {
         {wishlistItems.length > 0 ? (
           <>
             <div className="d-flex justify-content-between">
-              <p>{wishlistItems.length} products</p>
+              <p>
+                {wishlistItems.length} product
+                {wishlistItems.length > 1 ? 's' : ''}
+              </p>
               {/* <button onClick={() => dispatch(clearAll())}>Clear All</button> */}
             </div>
 

@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { Toaster } from 'react-hot-toast';
 import App from './App.jsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -13,7 +14,6 @@ import Account from './features/user/Account';
 import Addresses from './pages/Addresses';
 import AddressForm from './pages/AddressForm';
 import Wishlist from './features/wishlist/Wishlist';
-import { Toaster } from 'react-hot-toast';
 
 const router = createBrowserRouter([
   {
@@ -38,8 +38,8 @@ createRoot(document.getElementById('root')).render(
     <Provider store={store}>
       <RouterProvider router={router}>
         <App />
-        <Toaster />
       </RouterProvider>
+      <Toaster position="top-right" />;
     </Provider>
   </StrictMode>
 );

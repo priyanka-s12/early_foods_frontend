@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { toast } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 export const fetchWishlistAsync = createAsyncThunk(
   'wishlist/fetchWishlistAsync',
@@ -20,11 +20,8 @@ export const addToWishlistAsync = createAsyncThunk(
       'https://early-foods-backend.vercel.app/api/wishlists',
       newItem
     );
-    console.log('response from post api', response.data);
-    // if (response.data.wishlist !== undefined) {
-    //   toast.success(response.data.message, { position: 'top-right' });
-    // }
-    // toast.success(response.data.message);
+    // console.log('response from post api', response.data);
+    toast.success(response.data.message, { position: 'top-right' });
     return response.data;
   }
 );
@@ -75,9 +72,7 @@ const wishlistSlice = createSlice({
       console.log('action payload for wishlist: ', action.payload);
 
       const data = [...state.wishlistItems, action.payload.wishlist];
-      // console.log(data);
       state.wishlistItems = data.filter((item) => item !== undefined);
-      // state.wishlistItems = [...state.wishlistItems, action.payload.wishlist];
     });
     builder.addCase(addToWishlistAsync.rejected, (state, action) => {
       state.status = 'error';
