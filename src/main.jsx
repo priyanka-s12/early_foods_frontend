@@ -14,6 +14,7 @@ import Account from './features/user/Account';
 import Addresses from './pages/Addresses';
 import AddressForm from './pages/AddressForm';
 import Wishlist from './features/wishlist/Wishlist';
+import Cart from './features/cart/Cart';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
   { path: '/account/addresses/edit/:addressId', element: <AddressForm /> },
   { path: '/account/addresses/add', element: <AddressForm /> },
   { path: '/account/wishlist/:userId', element: <Wishlist /> },
+  { path: '/account/cart/:userId', element: <Cart /> },
 ]);
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -4,8 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchWishlistAsync,
   removeFromWishlistAsync,
-  clearAll,
+  moveFromWishlistToCart,
 } from './wishlistSlice';
+import { fetchCartAsync } from '../cart/cartSlice';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -13,9 +14,14 @@ const Wishlist = () => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
-  console.log(wishlistItems);
+  console.log('Wishlist data: ', wishlistItems, wishlistItems.length);
+
+  const { cartItems } = useSelector((state) => state.cart);
+  console.log('Cart data from wishlist: ', cartItems, cartItems.length);
+
   const { status, error } = useSelector((state) => state.wishlist);
   console.log(status, error);
+
   useEffect(() => {
     dispatch(fetchWishlistAsync());
   }, []);
@@ -70,7 +76,7 @@ const Wishlist = () => {
                         </p>
                       </div>
 
-                      <div className="d-flex justify-content-between mx-5">
+                      <div className="d-flex justify-content-between">
                         <p>₹ {wish.product?.sellingPrice}</p>
                         <p>{wish.product?.netWeight}g</p>
                       </div>
@@ -79,8 +85,19 @@ const Wishlist = () => {
                         <button
                           className="card-link btn"
                           style={{ backgroundColor: '#fbbf24' }}
+                          onClick={() => {
+                            dispatch(
+                              moveFromWishlistToCart({
+                                _id: wish?._id,
+                                product: wish.product?._id,
+                                user: '678661161046fcf9a4996dd5',
+                              })
+                            );
+                            dispatch(fetchCartAsync());
+                            // dispatch(fetchWishlistAsync());
+                          }}
                         >
-                          Add to Cart
+                          Move to Cart
                         </button>
                         <button
                           className="card-link btn btn-outline-danger"

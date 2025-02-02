@@ -38,6 +38,19 @@ export const removeFromWishlistAsync = createAsyncThunk(
   }
 );
 
+export const moveFromWishlistToCart = createAsyncThunk(
+  'wishlist/moveFromWishlistToCart',
+  async (item) => {
+    const response = await axios.post(
+      `https://early-foods-backend.vercel.app/api/wishlists/move`,
+      item
+    );
+    console.log('resp from moving wishlist item to cart: ', response.data);
+    toast.success(response.data.message, { position: 'top-right' });
+    return response.data;
+  }
+);
+
 const wishlistSlice = createSlice({
   name: 'wishlist',
   initialState: {
@@ -46,10 +59,10 @@ const wishlistSlice = createSlice({
     error: null,
   },
   reducers: {
-    clearAll: (state, action) => {
-      console.log(action.payload);
-      state.wishlistItems = [];
-    },
+    // clearAll: (state, action) => {
+    //   console.log(action.payload);
+    //   state.wishlistItems = [];
+    // },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchWishlistAsync.pending, (state) => {
@@ -72,6 +85,7 @@ const wishlistSlice = createSlice({
       console.log('action payload for wishlist: ', action.payload);
 
       const data = [...state.wishlistItems, action.payload.wishlist];
+      console.log(data);
       state.wishlistItems = data.filter((item) => item !== undefined);
     });
     builder.addCase(addToWishlistAsync.rejected, (state, action) => {
@@ -90,6 +104,28 @@ const wishlistSlice = createSlice({
       );
     });
     builder.addCase(removeFromWishlistAsync.rejected, (state, action) => {
+      state.status = 'error';
+      state.error = action.payload.error;
+    });
+
+    builder.addCase(moveFromWishlistToCart.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(moveFromWishlistToCart.fulfilled, (state, action) => {
+      state.status = 'success';
+      console.log(
+        'action payload for moving wishlist to cart: ',
+        action.payload
+      );
+
+      const data = [...state.wishlistItems, action.payload.wishlist];
+      console.log(data);
+      state.wishlistItems = data.filter(
+        (item) =>
+          item !== undefined && item._id !== action.payload.wishlist?._id
+      );
+    });
+    builder.addCase(moveFromWishlistToCart.rejected, (state, action) => {
       state.status = 'error';
       state.error = action.payload.error;
     });

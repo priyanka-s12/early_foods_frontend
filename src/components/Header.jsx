@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { fetchWishlistAsync } from '../features/wishlist/wishlistSlice';
+import { fetchCartAsync } from '../features/cart/cartSlice';
 const Header = () => {
   const [searchTitle, setSearchTitle] = useState('');
   const dispatch = useDispatch();
@@ -11,9 +12,17 @@ const Header = () => {
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
   console.log('Wishlist data: ', wishlistItems, wishlistItems.length);
 
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  console.log('Cart data: ', cartItems, cartItems.length);
+
+  // useEffect(() => {
+  //   dispatch(fetchWishlistAsync());
+  // }, [dispatch]);
+
   useEffect(() => {
     dispatch(fetchWishlistAsync());
-  }, []);
+    dispatch(fetchCartAsync());
+  }, [dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -79,7 +88,7 @@ const Header = () => {
                   </span>
                 </i>
               </Link>
-              <Link>
+              <Link to={`/account/cart/${userId}`}>
                 <i
                   className="bi bi-cart2 position-relative"
                   style={{ fontSize: '1.5rem', color: 'grey' }}
@@ -88,7 +97,7 @@ const Header = () => {
                     className="position-absolute top-0 start-100 badge rounded-pill text-bg-secondary translate-middle"
                     style={{ fontSize: '0.7rem' }}
                   >
-                    2
+                    {cartItems.length}
                   </span>
                 </i>
               </Link>

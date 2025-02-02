@@ -1,20 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToWishlistAsync } from '../features/wishlist/wishlistSlice';
+import { addToCartAsync } from '../features/cart/cartSlice';
 import { useEffect } from 'react';
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
-  const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
-  console.log(wishlistItems);
-
-  // const handleAddToCart = (product, user) => {
-  //   console.log('Product to add: ', product);
-  //   const addItem = wishlistItems.filter((item) => item.product !== undefined);
-  //   console.log(addItem);
-  // };
-
-  // const checkForUndefined = wishlistItems.filter((item) => item !== undefined);
-  // console.log('length without undefined: ', checkForUndefined);
 
   return (
     <div className="card mb-3">
@@ -45,6 +35,14 @@ const ProductCard = ({ product }) => {
           <button
             className="card-link btn"
             style={{ backgroundColor: '#fbbf24' }}
+            onClick={() =>
+              dispatch(
+                addToCartAsync({
+                  product: product._id,
+                  user: '678661161046fcf9a4996dd5',
+                })
+              )
+            }
           >
             Add to Cart
           </button>
@@ -58,12 +56,6 @@ const ProductCard = ({ product }) => {
                 })
               )
             }
-            // onClick={() =>
-            //   handleAddToCart({
-            //     product: product._id,
-            //     user: '678661161046fcf9a4996dd5',
-            //   })
-            // }
           >
             Add to Wishlist
           </button>
