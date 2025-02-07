@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 const Cart = () => {
   const dispatch = useDispatch();
+  const userId = '678661161046fcf9a4996dd5';
   const [message, setMessage] = useState('');
 
   const { cartItems, status, error } = useSelector((state) => state.cart);
@@ -19,7 +20,7 @@ const Cart = () => {
   console.log('Wishlist data from cart: ', wishlistItems, wishlistItems.length);
 
   useEffect(() => {
-    fetchCartAsync();
+    fetchCartAsync(userId);
   }, [dispatch]);
 
   const handleDelete = (cartId) => {

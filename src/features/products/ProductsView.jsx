@@ -37,7 +37,7 @@ const ProductsView = () => {
   // console.log(categories);
 
   const categoryFilter = useSelector((state) => state.products.categoryFilter);
-  console.log(categoryFilter);
+  // console.log(categoryFilter);
 
   const ratingFilter = useSelector((state) => state.products.ratingFilter);
 

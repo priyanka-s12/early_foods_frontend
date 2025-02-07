@@ -10,18 +10,18 @@ const Header = () => {
   const userId = '678661161046fcf9a4996dd5';
 
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
-  console.log('Wishlist data: ', wishlistItems, wishlistItems.length);
+  // console.log('Wishlist data: ', wishlistItems, wishlistItems.length);
 
   const cartItems = useSelector((state) => state.cart.cartItems);
-  console.log('Cart data: ', cartItems, cartItems.length);
+  // console.log('Cart data: ', cartItems, cartItems.length);
 
   // useEffect(() => {
   //   dispatch(fetchWishlistAsync());
   // }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchWishlistAsync());
-    dispatch(fetchCartAsync());
+    dispatch(fetchWishlistAsync(userId));
+    dispatch(fetchCartAsync(userId));
   }, [dispatch]);
 
   const submitHandler = (e) => {

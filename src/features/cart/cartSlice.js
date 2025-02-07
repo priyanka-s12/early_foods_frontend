@@ -4,11 +4,11 @@ import toast from 'react-hot-toast';
 
 export const fetchCartAsync = createAsyncThunk(
   'wishlist/fetchCartAsync',
-  async () => {
+  async (userId) => {
     const response = await axios.get(
-      'https://early-foods-backend.vercel.app/api/carts'
+      `https://early-foods-backend.vercel.app/api/carts/${userId}`
     );
-    console.log('resp from get api: ', response.data);
+    // console.log('resp from get api: ', response.data);
     return response.data;
   }
 );
@@ -66,7 +66,7 @@ const cartSlice = createSlice({
     });
     builder.addCase(fetchCartAsync.fulfilled, (state, action) => {
       state.status = 'success';
-      state.cartItems = action.payload;
+      state.cartItems = action.payload.products;
     });
     builder.addCase(fetchCartAsync.rejected, (state, action) => {
       state.status = 'error';

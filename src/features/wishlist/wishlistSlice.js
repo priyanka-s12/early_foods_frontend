@@ -4,33 +4,35 @@ import toast from 'react-hot-toast';
 
 export const fetchWishlistAsync = createAsyncThunk(
   'wishlist/fetchWishlistAsync',
-  async () => {
+  async (userId) => {
     const response = await axios.get(
-      'https://early-foods-backend.vercel.app/api/wishlists'
+      `https://early-foods-backend.vercel.app/api/wishlists/${userId}`
     );
-    console.log('resp from get api: ', response.data);
+    // console.log('resp from get api: ', response.data);
     return response.data;
   }
 );
 
+//make sure to pass object
 export const addToWishlistAsync = createAsyncThunk(
   'wishlist/addToWishlistAsync',
-  async (newItem) => {
+  async (newData) => {
+    console.log(newData);
     const response = await axios.post(
-      'https://early-foods-backend.vercel.app/api/wishlists',
-      newItem
+      `https://early-foods-backend.vercel.app/api/wishlists/${newData.user}`,
+      newData.product
     );
-    // console.log('response from post api', response.data);
-    toast.success(response.data.message, { position: 'top-right' });
+    console.log('response from post api', response.data);
+    // toast.success(response.data.message, { position: 'top-right' });
     return response.data;
   }
 );
 
 export const removeFromWishlistAsync = createAsyncThunk(
   'wishlist/removeFromWishlistAsync',
-  async (id) => {
+  async (user, product) => {
     const response = await axios.delete(
-      `https://early-foods-backend.vercel.app/api/wishlists/${id}`
+      `https://early-foods-backend.vercel.app/api/wishlists/${user}`
     );
     const data = response.data;
     window.location.reload();
@@ -54,7 +56,9 @@ export const moveFromWishlistToCart = createAsyncThunk(
 const wishlistSlice = createSlice({
   name: 'wishlist',
   initialState: {
-    wishlistItems: [],
+    wishlistItems: {
+      products: [],
+    },
     status: 'idle',
     error: null,
   },
@@ -70,7 +74,7 @@ const wishlistSlice = createSlice({
     });
     builder.addCase(fetchWishlistAsync.fulfilled, (state, action) => {
       state.status = 'success';
-      state.wishlistItems = action.payload;
+      state.wishlistItems = action.payload.products;
     });
     builder.addCase(fetchWishlistAsync.rejected, (state, action) => {
       state.status = 'error';
@@ -84,9 +88,10 @@ const wishlistSlice = createSlice({
       state.status = 'success';
       console.log('action payload for wishlist: ', action.payload);
 
-      const data = [...state.wishlistItems, action.payload.wishlist];
-      console.log(data);
-      state.wishlistItems = data.filter((item) => item !== undefined);
+      state.wishlistItems = [...state.wishlistItems, action.payload.wishlist];
+      // const data = [...state.wishlistItems, action.payload.wishlist];
+      // console.log(data);
+      // state.wishlistItems = data.filter((item) => item !== undefined);
     });
     builder.addCase(addToWishlistAsync.rejected, (state, action) => {
       state.status = 'error';

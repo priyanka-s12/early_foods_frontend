@@ -12,22 +12,23 @@ import { Link } from 'react-router-dom';
 
 const Wishlist = () => {
   const dispatch = useDispatch();
+  const userId = '678661161046fcf9a4996dd5';
   const [message, setMessage] = useState('');
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
   console.log('Wishlist data: ', wishlistItems, wishlistItems.length);
 
   const { cartItems } = useSelector((state) => state.cart);
-  console.log('Cart data from wishlist: ', cartItems, cartItems.length);
+  // console.log('Cart data from wishlist: ', cartItems, cartItems.length);
 
   const { status, error } = useSelector((state) => state.wishlist);
-  console.log(status, error);
+  // console.log(status, error);
 
   useEffect(() => {
-    dispatch(fetchWishlistAsync());
+    dispatch(fetchWishlistAsync(userId));
   }, []);
 
-  const handleDelete = (wishlistId) => {
-    dispatch(removeFromWishlistAsync(wishlistId));
+  const handleDelete = (userId, product) => {
+    dispatch(removeFromWishlistAsync(userId, product));
     setMessage('Item removed from wishlist');
   };
   return (
@@ -93,7 +94,7 @@ const Wishlist = () => {
                                 user: '678661161046fcf9a4996dd5',
                               })
                             );
-                            dispatch(fetchCartAsync());
+                            // dispatch(fetchCartAsync());
                             // dispatch(fetchWishlistAsync());
                           }}
                         >
@@ -101,7 +102,12 @@ const Wishlist = () => {
                         </button>
                         <button
                           className="card-link btn btn-outline-danger"
-                          onClick={() => handleDelete(wish._id)}
+                          onClick={() =>
+                            handleDelete(
+                              '678661161046fcf9a4996dd5',
+                              wish.product?._id
+                            )
+                          }
                         >
                           <i className="bi bi-trash3"></i>
                         </button>

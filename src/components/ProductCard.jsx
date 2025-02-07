@@ -5,6 +5,7 @@ import { addToCartAsync } from '../features/cart/cartSlice';
 import { useEffect } from 'react';
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
+  const userId = '678661161046fcf9a4996dd5';
 
   return (
     <div className="card mb-3">
@@ -48,14 +49,16 @@ const ProductCard = ({ product }) => {
           </button>
           <button
             className="card-link btn btn-primary"
-            onClick={() =>
-              dispatch(
-                addToWishlistAsync({
-                  product: product._id,
-                  user: '678661161046fcf9a4996dd5',
-                })
-              )
-            }
+            onClick={() => {
+              console.log(
+                dispatch(
+                  addToWishlistAsync({
+                    user: userId,
+                    product: product._id,
+                  })
+                )
+              );
+            }}
           >
             Add to Wishlist
           </button>
