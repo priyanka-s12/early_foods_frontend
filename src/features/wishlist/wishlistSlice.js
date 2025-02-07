@@ -56,9 +56,7 @@ export const moveFromWishlistToCart = createAsyncThunk(
 const wishlistSlice = createSlice({
   name: 'wishlist',
   initialState: {
-    wishlistItems: {
-      products: [],
-    },
+    wishlistItems: [],
     status: 'idle',
     error: null,
   },
@@ -88,10 +86,10 @@ const wishlistSlice = createSlice({
       state.status = 'success';
       console.log('action payload for wishlist: ', action.payload.wishlist);
 
-      state.wishlistItems.products?.push(action.payload.wishlist);
-      // const data = [...state.wishlistItems, action.payload.wishlist];
-      // console.log(data);
-      // state.wishlistItems = data.filter((item) => item !== undefined);
+      // state.wishlistItems.push(action.payload.wishlist);
+      const data = [...state.wishlistItems, action.payload.wishlist];
+      console.log(data);
+      state.wishlistItems = data.filter((item) => item !== undefined);
     });
     builder.addCase(addToWishlistAsync.rejected, (state, action) => {
       state.status = 'error';
