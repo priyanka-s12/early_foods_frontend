@@ -16,11 +16,11 @@ export const fetchWishlistAsync = createAsyncThunk(
 //make sure to pass object
 export const addToWishlistAsync = createAsyncThunk(
   'wishlist/addToWishlistAsync',
-  async (newData) => {
-    console.log(newData);
+  async ({ user, product }) => {
+    console.log(user, product);
     const response = await axios.post(
-      `https://early-foods-backend.vercel.app/api/wishlists/${newData.user}`,
-      newData.product
+      `https://early-foods-backend.vercel.app/api/wishlists/${user}`,
+      product
     );
     console.log('response from post api', response.data);
     // toast.success(response.data.message, { position: 'top-right' });
@@ -86,9 +86,9 @@ const wishlistSlice = createSlice({
     });
     builder.addCase(addToWishlistAsync.fulfilled, (state, action) => {
       state.status = 'success';
-      console.log('action payload for wishlist: ', action.payload);
+      console.log('action payload for wishlist: ', action.payload.wishlist);
 
-      state.wishlistItems = [...state.wishlistItems, action.payload.wishlist];
+      state.wishlistItems.products?.push(action.payload.wishlist);
       // const data = [...state.wishlistItems, action.payload.wishlist];
       // console.log(data);
       // state.wishlistItems = data.filter((item) => item !== undefined);
