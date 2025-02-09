@@ -4,35 +4,33 @@ import toast from 'react-hot-toast';
 
 export const fetchWishlistAsync = createAsyncThunk(
   'wishlist/fetchWishlistAsync',
-  async (userId) => {
+  async () => {
     const response = await axios.get(
-      `https://early-foods-backend.vercel.app/api/wishlists/${userId}`
+      'https://early-foods-backend.vercel.app/api/wishlists'
     );
     // console.log('resp from get api: ', response.data);
     return response.data;
   }
 );
 
-//make sure to pass object
 export const addToWishlistAsync = createAsyncThunk(
   'wishlist/addToWishlistAsync',
-  async ({ user, product }) => {
-    console.log(user, product);
+  async (newItem) => {
     const response = await axios.post(
-      `https://early-foods-backend.vercel.app/api/wishlists/${user}`,
-      product
+      'https://early-foods-backend.vercel.app/api/wishlists',
+      newItem
     );
-    console.log('response from post api', response.data);
-    // toast.success(response.data.message, { position: 'top-right' });
+    // console.log('response from post api', response.data);
+    toast.success(response.data.message, { position: 'top-right' });
     return response.data;
   }
 );
 
 export const removeFromWishlistAsync = createAsyncThunk(
   'wishlist/removeFromWishlistAsync',
-  async (user, product) => {
+  async (id) => {
     const response = await axios.delete(
-      `https://early-foods-backend.vercel.app/api/wishlists/${user}`
+      `https://early-foods-backend.vercel.app/api/wishlists/${id}`
     );
     const data = response.data;
     window.location.reload();
@@ -40,18 +38,18 @@ export const removeFromWishlistAsync = createAsyncThunk(
   }
 );
 
-export const moveFromWishlistToCart = createAsyncThunk(
-  'wishlist/moveFromWishlistToCart',
-  async (item) => {
-    const response = await axios.post(
-      `https://early-foods-backend.vercel.app/api/wishlists/move`,
-      item
-    );
-    console.log('resp from moving wishlist item to cart: ', response.data);
-    toast.success(response.data.message, { position: 'top-right' });
-    return response.data;
-  }
-);
+// export const moveFromWishlistToCart = createAsyncThunk(
+//   'wishlist/moveFromWishlistToCart',
+//   async (item) => {
+//     const response = await axios.post(
+//       `https://early-foods-backend.vercel.app/api/wishlists/move`,
+//       item
+//     );
+//     console.log('resp from moving wishlist item to cart: ', response.data);
+//     toast.success(response.data.message, { position: 'top-right' });
+//     return response.data;
+//   }
+// );
 
 const wishlistSlice = createSlice({
   name: 'wishlist',
@@ -72,7 +70,7 @@ const wishlistSlice = createSlice({
     });
     builder.addCase(fetchWishlistAsync.fulfilled, (state, action) => {
       state.status = 'success';
-      state.wishlistItems = action.payload.products;
+      state.wishlistItems = action.payload;
     });
     builder.addCase(fetchWishlistAsync.rejected, (state, action) => {
       state.status = 'error';
@@ -84,11 +82,10 @@ const wishlistSlice = createSlice({
     });
     builder.addCase(addToWishlistAsync.fulfilled, (state, action) => {
       state.status = 'success';
-      console.log('action payload for wishlist: ', action.payload.wishlist);
+      console.log('action payload for wishlist: ', action.payload);
 
-      // state.wishlistItems.push(action.payload.wishlist);
       const data = [...state.wishlistItems, action.payload.wishlist];
-      console.log(data);
+      // console.log(data);
       state.wishlistItems = data.filter((item) => item !== undefined);
     });
     builder.addCase(addToWishlistAsync.rejected, (state, action) => {
@@ -107,28 +104,6 @@ const wishlistSlice = createSlice({
       );
     });
     builder.addCase(removeFromWishlistAsync.rejected, (state, action) => {
-      state.status = 'error';
-      state.error = action.payload.error;
-    });
-
-    builder.addCase(moveFromWishlistToCart.pending, (state) => {
-      state.status = 'loading';
-    });
-    builder.addCase(moveFromWishlistToCart.fulfilled, (state, action) => {
-      state.status = 'success';
-      console.log(
-        'action payload for moving wishlist to cart: ',
-        action.payload
-      );
-
-      const data = [...state.wishlistItems, action.payload.wishlist];
-      console.log(data);
-      state.wishlistItems = data.filter(
-        (item) =>
-          item !== undefined && item._id !== action.payload.wishlist?._id
-      );
-    });
-    builder.addCase(moveFromWishlistToCart.rejected, (state, action) => {
       state.status = 'error';
       state.error = action.payload.error;
     });

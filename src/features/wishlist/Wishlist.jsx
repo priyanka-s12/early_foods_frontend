@@ -1,21 +1,16 @@
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  fetchWishlistAsync,
-  removeFromWishlistAsync,
-  moveFromWishlistToCart,
-} from './wishlistSlice';
+import { fetchWishlistAsync, removeFromWishlistAsync } from './wishlistSlice';
 import { fetchCartAsync } from '../cart/cartSlice';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Wishlist = () => {
   const dispatch = useDispatch();
-  const userId = '678661161046fcf9a4996dd5';
   const [message, setMessage] = useState('');
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
-  console.log('Wishlist data: ', wishlistItems, wishlistItems.length);
+  // console.log('Wishlist data: ', wishlistItems, wishlistItems.length);
 
   const { cartItems } = useSelector((state) => state.cart);
   // console.log('Cart data from wishlist: ', cartItems, cartItems.length);
@@ -24,11 +19,11 @@ const Wishlist = () => {
   // console.log(status, error);
 
   useEffect(() => {
-    dispatch(fetchWishlistAsync(userId));
+    dispatch(fetchWishlistAsync());
   }, []);
 
-  const handleDelete = (userId, product) => {
-    dispatch(removeFromWishlistAsync(userId, product));
+  const handleDelete = (wishlistId) => {
+    dispatch(removeFromWishlistAsync(wishlistId));
     setMessage('Item removed from wishlist');
   };
   return (
@@ -102,12 +97,7 @@ const Wishlist = () => {
                         </button>
                         <button
                           className="card-link btn btn-outline-danger"
-                          onClick={() =>
-                            handleDelete(
-                              '678661161046fcf9a4996dd5',
-                              wish.product?._id
-                            )
-                          }
+                          onClick={() => handleDelete(wish._id)}
                         >
                           <i className="bi bi-trash3"></i>
                         </button>

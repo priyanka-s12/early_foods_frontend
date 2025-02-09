@@ -15,14 +15,13 @@ const Header = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   // console.log('Cart data: ', cartItems, cartItems.length);
 
-  // useEffect(() => {
-  //   dispatch(fetchWishlistAsync());
-  // }, [dispatch]);
-
   useEffect(() => {
-    dispatch(fetchWishlistAsync(userId));
-    dispatch(fetchCartAsync(userId));
+    dispatch(fetchWishlistAsync());
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   dispatch(fetchCartAsync(userId));
+  // }, [dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();

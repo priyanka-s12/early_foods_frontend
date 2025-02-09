@@ -50,13 +50,11 @@ const ProductCard = ({ product }) => {
           <button
             className="card-link btn btn-primary"
             onClick={() => {
-              console.log(
-                dispatch(
-                  addToWishlistAsync({
-                    user: userId,
-                    product: product._id,
-                  })
-                )
+              dispatch(
+                addToWishlistAsync({
+                  user: userId,
+                  product: product._id,
+                })
               );
             }}
           >
