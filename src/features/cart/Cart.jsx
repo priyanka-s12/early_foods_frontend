@@ -7,6 +7,7 @@ import {
   moveFromCartToWishlist,
   increaseQuantityAsync,
   decreaseQuantityAsync,
+  calculateTotal,
 } from './cartSlice';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -15,8 +16,10 @@ const Cart = () => {
   const userId = '678661161046fcf9a4996dd5';
   const [message, setMessage] = useState('');
 
-  const { cartItems, status, error } = useSelector((state) => state.cart);
-  // console.log('Cart data: ', cartItems, cartItems.length);
+  const { cartItems, status, error, totalPrice } = useSelector(
+    (state) => state.cart
+  );
+  console.log('Cart data: ', cartItems, totalPrice, cartItems.length);
 
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
   // console.log('Wishlist data from cart: ', wishlistItems, wishlistItems.length);
@@ -24,6 +27,10 @@ const Cart = () => {
   useEffect(() => {
     fetchCartAsync(userId);
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(calculateTotal());
+  }, [cartItems]);
 
   const handleDelete = (cartId) => {
     dispatch(removeFromCartAsync(cartId));
@@ -139,7 +146,18 @@ const Cart = () => {
                 </div>
               </div>
               <div className="col-md-4">
-                <h4>Total Price:</h4>
+                <h4>Total Price</h4>
+                <div className="card">
+                  <div className="card-body">
+                    <h4>₹ {totalPrice}</h4>
+                    <br />
+                    <div className="d-grid gap-2">
+                      <button className="btn btn-outline-primary">
+                        Checkout
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </>
           ) : (

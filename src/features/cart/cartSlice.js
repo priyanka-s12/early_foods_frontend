@@ -85,7 +85,16 @@ const cartSlice = createSlice({
     status: 'idle',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    calculateTotal: (state, action) => {
+      const total = state.cartItems.reduce((acc, curr) => {
+        // console.log(curr.quantity, curr.product.sellingPrice);
+        return acc + curr.product.sellingPrice * curr.quantity;
+      }, 0);
+      console.log(total);
+      state.totalPrice = total;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchCartAsync.pending, (state) => {
       state.status = 'loading';
@@ -197,5 +206,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { increaseQuantity, decreaseQuantity } = cartSlice.actions;
+export const { calculateTotal } = cartSlice.actions;
 export default cartSlice.reducer;
