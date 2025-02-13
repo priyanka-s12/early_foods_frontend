@@ -106,13 +106,14 @@ const cartSlice = createSlice({
       state.status = 'success';
       console.log('action payload for cart: ', action.payload);
 
-      // console.log(current(state));
-      const existingItem = state.cartItems.find(
+      const index = state.cartItems.findIndex(
         (item) => item.product._id === action.payload.cart.product
       );
-      console.log('Existing: ', existingItem);
-      if (!existingItem) {
+      console.log('index: ', index);
+      if (index === -1) {
         state.cartItems = [...state.cartItems, action.payload.cart];
+      } else {
+        state.cartItems[index].quantity = state.cartItems[index].quantity + 1;
       }
     });
     builder.addCase(addToCartAsync.rejected, (state, action) => {
