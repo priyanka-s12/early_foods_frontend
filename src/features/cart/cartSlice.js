@@ -1,14 +1,14 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
 export const fetchCartAsync = createAsyncThunk(
-  'wishlist/fetchCartAsync',
-  async (userId) => {
+  'cart/fetchCartAsync',
+  async () => {
     const response = await axios.get(
-      `https://early-foods-backend.vercel.app/api/carts/${userId}`
+      `https://early-foods-backend.vercel.app/api/carts`
     );
-    // console.log('resp from get api: ', response.data);
+    console.log('resp from get cart api: ', response.data);
     return response.data;
   }
 );
@@ -20,7 +20,7 @@ export const addToCartAsync = createAsyncThunk(
       'https://early-foods-backend.vercel.app/api/carts',
       newItem
     );
-    console.log('response from post api', response.data);
+    // console.log('response from post cart api', response.data);
     toast.success(response.data.message, { position: 'top-right' });
     return response.data;
   }
@@ -35,6 +35,32 @@ export const removeFromCartAsync = createAsyncThunk(
     const data = response.data;
     window.location.reload();
     return data;
+  }
+);
+
+export const increaseQuantityAsync = createAsyncThunk(
+  'cart/increaseQuantityAsync',
+  async (item) => {
+    const response = await axios.put(
+      'https://early-foods-backend.vercel.app/api/carts/increase',
+      item
+    );
+    console.log(response);
+    toast.success(response.data.message, { position: 'top-right' });
+    return response.data;
+  }
+);
+
+export const decreaseQuantityAsync = createAsyncThunk(
+  'cart/decreaseQuantityAsync',
+  async (item) => {
+    const response = await axios.put(
+      'https://early-foods-backend.vercel.app/api/carts/decrease',
+      item
+    );
+    console.log(response);
+    toast.success(response.data.message, { position: 'top-right' });
+    return response.data;
   }
 );
 
@@ -66,7 +92,7 @@ const cartSlice = createSlice({
     });
     builder.addCase(fetchCartAsync.fulfilled, (state, action) => {
       state.status = 'success';
-      state.cartItems = action.payload.products;
+      state.cartItems = action.payload.cart;
     });
     builder.addCase(fetchCartAsync.rejected, (state, action) => {
       state.status = 'error';
@@ -80,8 +106,14 @@ const cartSlice = createSlice({
       state.status = 'success';
       console.log('action payload for cart: ', action.payload);
 
-      const data = [...state.cartItems, action.payload.cart];
-      state.cartItems = data.filter((item) => item !== undefined);
+      // console.log(current(state));
+      const existingItem = state.cartItems.find(
+        (item) => item.product._id === action.payload.cart.product
+      );
+      console.log('Existing: ', existingItem);
+      if (!existingItem) {
+        state.cartItems = [...state.cartItems, action.payload.cart];
+      }
     });
     builder.addCase(addToCartAsync.rejected, (state, action) => {
       state.status = 'error';
@@ -99,6 +131,44 @@ const cartSlice = createSlice({
       );
     });
     builder.addCase(removeFromCartAsync.rejected, (state, action) => {
+      state.status = 'error';
+      state.error = action.payload.error;
+    });
+
+    builder.addCase(increaseQuantityAsync.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(increaseQuantityAsync.fulfilled, (state, action) => {
+      state.status = 'success';
+      console.log('Payload: ', action.payload);
+
+      const index = state.cartItems.findIndex((item) => {
+        console.log(item.product._id, action.payload.product.product);
+        return item.product._id === action.payload.product.product;
+      });
+      console.log(index);
+      state.cartItems[index].quantity = action.payload.product.quantity;
+    });
+    builder.addCase(increaseQuantityAsync.rejected, (state, action) => {
+      state.status = 'error';
+      state.error = action.payload.error;
+    });
+
+    builder.addCase(decreaseQuantityAsync.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(decreaseQuantityAsync.fulfilled, (state, action) => {
+      state.status = 'success';
+      console.log('Payload: ', action.payload);
+
+      const index = state.cartItems.findIndex((item) => {
+        console.log(item.product._id, action.payload.product.product);
+        return item.product._id === action.payload.product.product;
+      });
+      console.log(index);
+      state.cartItems[index].quantity = action.payload.product.quantity;
+    });
+    builder.addCase(decreaseQuantityAsync.rejected, (state, action) => {
       state.status = 'error';
       state.error = action.payload.error;
     });
@@ -126,5 +196,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const {} = cartSlice.actions;
+export const { increaseQuantity, decreaseQuantity } = cartSlice.actions;
 export default cartSlice.reducer;

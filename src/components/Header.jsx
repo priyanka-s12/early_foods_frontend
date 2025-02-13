@@ -15,12 +15,16 @@ const Header = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   // console.log('Cart data: ', cartItems, cartItems.length);
 
+  const cartLength = cartItems.reduce((acc, curr) => acc + curr.quantity, 0);
+  // console.log(cartLength);
+
   useEffect(() => {
     dispatch(fetchWishlistAsync());
+    dispatch(fetchCartAsync());
   }, [dispatch]);
 
   // useEffect(() => {
-  //   dispatch(fetchCartAsync(userId));
+  //   dispatch(fetchCartAsync());
   // }, [dispatch]);
 
   const submitHandler = (e) => {
@@ -96,7 +100,7 @@ const Header = () => {
                     className="position-absolute top-0 start-100 badge rounded-pill text-bg-secondary translate-middle"
                     style={{ fontSize: '0.7rem' }}
                   >
-                    {cartItems.length}
+                    {cartLength}
                   </span>
                 </i>
               </Link>

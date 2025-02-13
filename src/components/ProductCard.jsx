@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToWishlistAsync } from '../features/wishlist/wishlistSlice';
 import { addToCartAsync } from '../features/cart/cartSlice';
-import { useEffect } from 'react';
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const userId = '678661161046fcf9a4996dd5';
@@ -39,8 +38,8 @@ const ProductCard = ({ product }) => {
             onClick={() =>
               dispatch(
                 addToCartAsync({
+                  user: userId,
                   product: product._id,
-                  user: '678661161046fcf9a4996dd5',
                 })
               )
             }

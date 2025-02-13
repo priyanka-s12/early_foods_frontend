@@ -10,12 +10,8 @@ const Search = () => {
   const { searchTitle } = useParams();
   // console.log(searchTitle);
   const dispatch = useDispatch();
-  const products = useSelector((state) => {
-    return state.products.products;
-  });
-  const status = useSelector((state) => state.products.status);
-  const error = useSelector((state) => state.products.error);
-  // console.log(products);
+  const { products, status, error } = useSelector((state) => state.products);
+  console.log(products, status, error);
 
   useEffect(() => {
     dispatch(searchProductByTitleAsync(searchTitle));
@@ -26,14 +22,14 @@ const Search = () => {
       <main className="container py-3">
         <h2 className="mb-3">Search Results</h2>
         {status === 'loading' && <p>Loading...</p>}
-        {error && <p>{error}</p>}
+        {status === 'error' && <p>{error}</p>}
 
         <div className="row">
-          <p>
-            {products.length} results found for "{searchTitle}"
-          </p>
-          {products.length > 0 ? (
+          {products ? (
             <>
+              <p>
+                {products.length} results found for "{searchTitle}"
+              </p>
               {products.map((product) => (
                 <div className="col-sm-6 col-md-3" key={product._id}>
                   {/* <div className="card mb-3">

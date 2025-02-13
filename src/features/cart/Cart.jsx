@@ -5,6 +5,8 @@ import {
   fetchCartAsync,
   removeFromCartAsync,
   moveFromCartToWishlist,
+  increaseQuantityAsync,
+  decreaseQuantityAsync,
 } from './cartSlice';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -14,10 +16,10 @@ const Cart = () => {
   const [message, setMessage] = useState('');
 
   const { cartItems, status, error } = useSelector((state) => state.cart);
-  console.log('Cart data: ', cartItems, cartItems.length);
+  // console.log('Cart data: ', cartItems, cartItems.length);
 
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
-  console.log('Wishlist data from cart: ', wishlistItems, wishlistItems.length);
+  // console.log('Wishlist data from cart: ', wishlistItems, wishlistItems.length);
 
   useEffect(() => {
     fetchCartAsync(userId);
@@ -50,7 +52,7 @@ const Cart = () => {
 
                 <div className="row">
                   {cartItems.map((cart) => (
-                    <div className="col-md-4" key={cart?._id}>
+                    <div className="col-md-4" key={cart._id}>
                       <div className="card mb-3">
                         <Link to={`/products/${cart.product?._id}`}>
                           <img
@@ -80,11 +82,29 @@ const Cart = () => {
                           </div>
 
                           <div className="d-flex justify-content-around">
-                            <button className="btn btn-outline-dark">
+                            <button
+                              className="btn btn-outline-dark"
+                              onClick={() =>
+                                dispatch(
+                                  decreaseQuantityAsync({
+                                    product: cart.product?._id,
+                                  })
+                                )
+                              }
+                            >
                               <i className="bi bi-dash"></i>
                             </button>
-                            {cart.product?.quantity}
-                            <button className="btn btn-outline-dark">
+                            {cart.quantity}
+                            <button
+                              className="btn btn-outline-dark"
+                              onClick={() =>
+                                dispatch(
+                                  increaseQuantityAsync({
+                                    product: cart.product?._id,
+                                  })
+                                )
+                              }
+                            >
                               <i className="bi bi-plus"></i>
                             </button>
                           </div>

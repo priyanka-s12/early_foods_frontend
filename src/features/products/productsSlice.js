@@ -26,11 +26,15 @@ export const fetchProductById = createAsyncThunk(
 export const searchProductByTitleAsync = createAsyncThunk(
   'products/searchProductByTitleAsync',
   async (title) => {
-    const response = await axios.get(
-      `https://early-foods-backend.vercel.app/api/products/search/${title}`
-    );
-    console.log(response);
-    return response.data;
+    try {
+      const response = await axios.get(
+        `https://early-foods-backend.vercel.app/api/products/search/${title}`
+      );
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
@@ -109,6 +113,7 @@ const productsSlice = createSlice({
     });
     builder.addCase(searchProductByTitleAsync.fulfilled, (state, action) => {
       state.status = 'success';
+      console.log('Action payload for search: ', action.payload);
       state.products = action.payload;
     });
     builder.addCase(searchProductByTitleAsync.rejected, (state, action) => {

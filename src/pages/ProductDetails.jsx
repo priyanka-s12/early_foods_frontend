@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { useEffect } from 'react';
 import { fetchProductsAsync } from '../features/products/productsSlice';
 import { addToWishlistAsync } from '../features/wishlist/wishlistSlice';
+import { addToCartAsync } from '../features/cart/cartSlice';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
@@ -43,6 +44,14 @@ const ProductDetails = () => {
                       <button
                         className="card-link btn"
                         style={{ backgroundColor: '#fbbf24' }}
+                        onClick={() =>
+                          dispatch(
+                            addToCartAsync({
+                              user: '678661161046fcf9a4996dd5',
+                              product: findProduct._id,
+                            })
+                          )
+                        }
                       >
                         Add to Cart
                       </button>
@@ -66,11 +75,6 @@ const ProductDetails = () => {
                       <h2 className="card-title mb-3">
                         {findProduct.productTitle}
                       </h2>
-
-                      {/* <h6>Rating: {findProduct.rating}</h6>
-                      <h6 className="">
-                        Number of Reviews: {findProduct.numberOfReviews}
-                      </h6> */}
                       <p>
                         <i
                           className="bi bi-star-fill me-2"

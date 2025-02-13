@@ -11,11 +11,11 @@ const NewlyAddedProducts = () => {
   const status = useSelector((state) => state.products.status);
   const error = useSelector((state) => state.products.error);
 
-  const lastFourProducts = products.slice(-4);
+  const lastFourProducts = products?.slice(-4);
   // console.log(lastFourProducts);
   useEffect(() => {
     dispatch(fetchProductsAsync());
-  }, []);
+  }, [dispatch]);
   return (
     <main>
       <section>
