@@ -86,7 +86,7 @@ const cartSlice = createSlice({
     error: null,
   },
   reducers: {
-    calculateTotal: (state, action) => {
+    calculateTotal: (state) => {
       const total = state.cartItems.reduce((acc, curr) => {
         // console.log(curr.quantity, curr.product.sellingPrice);
         return acc + curr.product.sellingPrice * curr.quantity;
