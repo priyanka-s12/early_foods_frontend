@@ -66,13 +66,13 @@ export const decreaseQuantityAsync = createAsyncThunk(
 
 export const moveFromCartToWishlist = createAsyncThunk(
   'cart/moveFromCartToWishlist',
-  async (item) => {
-    const response = await axios.post(
-      `https://early-foods-backend.vercel.app/api/carts/move`,
-      item
+  async (newData) => {
+    const response = await axios.put(
+      `https://early-foods-backend.vercel.app/api/wishlists/move`,
+      newData
     );
     console.log('resp from moving cart item to wishlist: ', response.data);
-    toast.success(response.data.message, { position: 'top-right' });
+    toast.success('Item has been moved to wishlist', { position: 'top-right' });
     return response.data;
   }
 );
@@ -89,7 +89,7 @@ const cartSlice = createSlice({
     calculateTotal: (state) => {
       const total = state.cartItems.reduce((acc, curr) => {
         // console.log(curr.quantity, curr.product.sellingPrice);
-        return acc + curr.product.sellingPrice * curr.quantity;
+        return acc + curr.product?.sellingPrice * curr.quantity;
       }, 0);
       console.log(total);
       state.totalPrice = total;
@@ -193,11 +193,9 @@ const cartSlice = createSlice({
         action.payload
       );
 
-      const data = [...state.cartItems, action.payload.cart];
-      console.log(data);
-      state.cartItems = data.filter(
-        (item) => item !== undefined && item._id !== action.payload.cart?._id
-      );
+      state.cartItems = state.cartItems.filter((item) => {
+        return item.product._id !== action.payload.product.product;
+      });
     });
     builder.addCase(moveFromCartToWishlist.rejected, (state, action) => {
       state.status = 'error';

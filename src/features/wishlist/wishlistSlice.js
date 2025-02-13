@@ -38,18 +38,20 @@ export const removeFromWishlistAsync = createAsyncThunk(
   }
 );
 
-// export const moveFromWishlistToCart = createAsyncThunk(
-//   'wishlist/moveFromWishlistToCart',
-//   async (item) => {
-//     const response = await axios.post(
-//       `https://early-foods-backend.vercel.app/api/wishlists/move`,
-//       item
-//     );
-//     console.log('resp from moving wishlist item to cart: ', response.data);
-//     toast.success(response.data.message, { position: 'top-right' });
-//     return response.data;
-//   }
-// );
+export const moveFromWishlistToCart = createAsyncThunk(
+  'wishlist/moveFromWishlistToCart',
+  async (newData) => {
+    const response = await axios.put(
+      `https://early-foods-backend.vercel.app/api/carts/move`,
+      newData
+    );
+    console.log('resp from moving wishlist item to cart: ', response.data);
+    toast.success('Item has been moved to shopping cart', {
+      position: 'top-right',
+    });
+    return response.data;
+  }
+);
 
 const wishlistSlice = createSlice({
   name: 'wishlist',
@@ -107,8 +109,27 @@ const wishlistSlice = createSlice({
       state.status = 'error';
       state.error = action.payload.error;
     });
+
+    builder.addCase(moveFromWishlistToCart.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(moveFromWishlistToCart.fulfilled, (state, action) => {
+      state.status = 'success';
+      console.log(
+        'action payload for moving wishlist to cart: ',
+        action.payload
+      );
+
+      state.wishlistItems = state.wishlistItems.filter((item) => {
+        return item.product._id !== action.payload.product.product;
+      });
+    });
+    builder.addCase(moveFromWishlistToCart.rejected, (state, action) => {
+      state.status = 'error';
+      state.error = action.payload.error;
+    });
   },
 });
 
-export const { clearAll, updateWishlistCount } = wishlistSlice.actions;
+export const {} = wishlistSlice.actions;
 export default wishlistSlice.reducer;

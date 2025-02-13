@@ -9,6 +9,7 @@ import {
   decreaseQuantityAsync,
   calculateTotal,
 } from './cartSlice';
+
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 const Cart = () => {
@@ -25,7 +26,7 @@ const Cart = () => {
   // console.log('Wishlist data from cart: ', wishlistItems, wishlistItems.length);
 
   useEffect(() => {
-    fetchCartAsync(userId);
+    dispatch(fetchCartAsync());
   }, [dispatch]);
 
   useEffect(() => {

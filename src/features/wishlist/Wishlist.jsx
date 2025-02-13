@@ -1,7 +1,11 @@
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchWishlistAsync, removeFromWishlistAsync } from './wishlistSlice';
+import {
+  fetchWishlistAsync,
+  removeFromWishlistAsync,
+  moveFromWishlistToCart,
+} from './wishlistSlice';
 import { fetchCartAsync } from '../cart/cartSlice';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -89,8 +93,6 @@ const Wishlist = () => {
                                 user: '678661161046fcf9a4996dd5',
                               })
                             );
-                            // dispatch(fetchCartAsync());
-                            // dispatch(fetchWishlistAsync());
                           }}
                         >
                           Move to Cart
