@@ -81,6 +81,7 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState: {
     cartItems: [],
+    wishlistItems: [],
     totalPrice: 0,
     totalCartItems: 0,
     status: 'idle',
@@ -184,6 +185,7 @@ const cartSlice = createSlice({
         return item.product._id === action.payload.product.product;
       });
       // console.log(index);
+
       state.cartItems[index].quantity = action.payload.product.quantity;
     });
     builder.addCase(decreaseQuantityAsync.rejected, (state, action) => {
@@ -204,6 +206,8 @@ const cartSlice = createSlice({
       state.cartItems = state.cartItems.filter((item) => {
         return item.product._id !== action.payload.product.product;
       });
+
+      state.wishlistItems = [...state.wishlistItems, action.payload.product];
     });
     builder.addCase(moveFromCartToWishlist.rejected, (state, action) => {
       state.status = 'error';
