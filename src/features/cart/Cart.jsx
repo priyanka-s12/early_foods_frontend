@@ -1,5 +1,6 @@
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchCartAsync,
@@ -9,6 +10,8 @@ import {
   decreaseQuantityAsync,
   calculateTotal,
 } from './cartSlice';
+
+import { fetchWishlistAsync } from '../wishlist/wishlistSlice';
 
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -33,6 +36,7 @@ const Cart = () => {
 
   useEffect(() => {
     dispatch(fetchCartAsync());
+    // dispatch(fetchWishlistAsync());
   }, [dispatch]);
 
   useEffect(() => {
@@ -43,6 +47,12 @@ const Cart = () => {
     dispatch(removeFromCartAsync(cartId));
     setMessage('Item removed from cart');
   };
+
+  // const handleClick = (cartId, productId, user) => {
+  //   console.log(cartId, productId, user);
+  //   dispatch(moveFromCartToWishlist(cartId, productId, user));
+  //   dispatch(fetchWishlistAsync());
+  // };
 
   return (
     <>
@@ -135,6 +145,13 @@ const Cart = () => {
                                   })
                                 )
                               }
+                              // onClick={() =>
+                              //   handleClick({
+                              //     _id: cart._id,
+                              //     product: cart.product?._id,
+                              //     user: '678661161046fcf9a4996dd5',
+                              //   })
+                              // }
                             >
                               Move to Wishlist
                             </button>

@@ -45,7 +45,7 @@ export const increaseQuantityAsync = createAsyncThunk(
       'https://early-foods-backend.vercel.app/api/carts/increase',
       item
     );
-    console.log(response);
+    // console.log(response);
     toast.success(response.data.message, { position: 'top-right' });
     return response.data;
   }
@@ -58,7 +58,7 @@ export const decreaseQuantityAsync = createAsyncThunk(
       'https://early-foods-backend.vercel.app/api/carts/decrease',
       item
     );
-    console.log(response);
+    // console.log(response);
     toast.success(response.data.message, { position: 'top-right' });
     return response.data;
   }
@@ -92,14 +92,14 @@ const cartSlice = createSlice({
         // console.log(curr.quantity, curr.product.sellingPrice);
         return acc + curr.product?.sellingPrice * curr.quantity;
       }, 0);
-      console.log(total);
+      // console.log(total);
       state.totalPrice = total;
     },
     calculateTotalCartItems: (state) => {
       const totalCart = state.cartItems.reduce((acc, curr) => {
         return acc + curr.quantity;
       }, 0);
-      console.log(totalCart);
+      // console.log(totalCart);
       state.totalCartItems = totalCart;
     },
   },
@@ -126,7 +126,7 @@ const cartSlice = createSlice({
       const index = state.cartItems.findIndex(
         (item) => item.product._id === action.payload.cart.product
       );
-      console.log('index: ', index);
+      // console.log('index: ', index);
       if (index === -1) {
         state.cartItems = [...state.cartItems, action.payload.cart];
       } else {
@@ -143,7 +143,7 @@ const cartSlice = createSlice({
     });
     builder.addCase(removeFromCartAsync.fulfilled, (state, action) => {
       state.status = 'success';
-      console.log(action.payload);
+      // console.log(action.payload);
       state.cartItems = state.cartItems.filter(
         (element) => element._id !== action.payload
       );
@@ -158,13 +158,13 @@ const cartSlice = createSlice({
     });
     builder.addCase(increaseQuantityAsync.fulfilled, (state, action) => {
       state.status = 'success';
-      console.log('Payload: ', action.payload);
+      // console.log('Payload: ', action.payload);
 
       const index = state.cartItems.findIndex((item) => {
         console.log(item.product._id, action.payload.product.product);
         return item.product._id === action.payload.product.product;
       });
-      console.log(index);
+      // console.log(index);
       state.cartItems[index].quantity = action.payload.product.quantity;
     });
     builder.addCase(increaseQuantityAsync.rejected, (state, action) => {
@@ -177,13 +177,13 @@ const cartSlice = createSlice({
     });
     builder.addCase(decreaseQuantityAsync.fulfilled, (state, action) => {
       state.status = 'success';
-      console.log('Payload: ', action.payload);
+      // console.log('Payload: ', action.payload);
 
       const index = state.cartItems.findIndex((item) => {
         console.log(item.product._id, action.payload.product.product);
         return item.product._id === action.payload.product.product;
       });
-      console.log(index);
+      // console.log(index);
       state.cartItems[index].quantity = action.payload.product.quantity;
     });
     builder.addCase(decreaseQuantityAsync.rejected, (state, action) => {
