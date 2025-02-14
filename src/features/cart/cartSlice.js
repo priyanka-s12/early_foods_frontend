@@ -8,7 +8,7 @@ export const fetchCartAsync = createAsyncThunk(
     const response = await axios.get(
       `https://early-foods-backend.vercel.app/api/carts`
     );
-    console.log('resp from get cart api: ', response.data);
+    // console.log('resp from get cart api: ', response.data);
     return response.data;
   }
 );
@@ -82,6 +82,7 @@ const cartSlice = createSlice({
   initialState: {
     cartItems: [],
     totalPrice: 0,
+    totalCartItems: 0,
     status: 'idle',
     error: null,
   },
@@ -93,6 +94,13 @@ const cartSlice = createSlice({
       }, 0);
       console.log(total);
       state.totalPrice = total;
+    },
+    calculateTotalCartItems: (state) => {
+      const totalCart = state.cartItems.reduce((acc, curr) => {
+        return acc + curr.quantity;
+      }, 0);
+      console.log(totalCart);
+      state.totalCartItems = totalCart;
     },
   },
   extraReducers: (builder) => {
@@ -204,5 +212,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { calculateTotal } = cartSlice.actions;
+export const { calculateTotal, calculateTotalCartItems } = cartSlice.actions;
 export default cartSlice.reducer;

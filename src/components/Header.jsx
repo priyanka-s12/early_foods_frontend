@@ -2,7 +2,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { fetchWishlistAsync } from '../features/wishlist/wishlistSlice';
-import { fetchCartAsync } from '../features/cart/cartSlice';
+import {
+  fetchCartAsync,
+  calculateTotalCartItems,
+} from '../features/cart/cartSlice';
 const Header = () => {
   const [searchTitle, setSearchTitle] = useState('');
   const dispatch = useDispatch();
@@ -12,7 +15,7 @@ const Header = () => {
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
   // console.log('Wishlist data: ', wishlistItems, wishlistItems.length);
 
-  const cartItems = useSelector((state) => state.cart.cartItems);
+  const { cartItems, totalCartItems } = useSelector((state) => state.cart);
   // console.log('Cart data: ', cartItems, cartItems.length);
 
   const cartLength = cartItems.reduce((acc, curr) => acc + curr.quantity, 0);
@@ -21,6 +24,7 @@ const Header = () => {
   useEffect(() => {
     dispatch(fetchWishlistAsync());
     dispatch(fetchCartAsync());
+    dispatch(calculateTotalCartItems());
   }, [dispatch]);
 
   // useEffect(() => {

@@ -17,10 +17,16 @@ const Cart = () => {
   const userId = '678661161046fcf9a4996dd5';
   const [message, setMessage] = useState('');
 
-  const { cartItems, status, error, totalPrice } = useSelector(
+  const { cartItems, status, error, totalPrice, totalCartItems } = useSelector(
     (state) => state.cart
   );
-  console.log('Cart data: ', cartItems, totalPrice, cartItems.length);
+  // console.log(
+  //   'Cart data: ',
+  //   cartItems,
+  //   totalPrice,
+  //   cartItems.length,
+  //   totalCartItems
+  // );
 
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
   // console.log('Wishlist data from cart: ', wishlistItems, wishlistItems.length);
@@ -153,9 +159,9 @@ const Cart = () => {
                     <h4>₹ {totalPrice}</h4>
                     <br />
                     <div className="d-grid gap-2">
-                      <button className="btn btn-outline-primary">
+                      <Link className="btn btn-outline-primary" to="/checkout">
                         Checkout
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
