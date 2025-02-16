@@ -49,6 +49,7 @@ const ProductDetails = () => {
                             addToCartAsync({
                               user: '678661161046fcf9a4996dd5',
                               product: findProduct._id,
+                              quantity: 1,
                             })
                           )
                         }

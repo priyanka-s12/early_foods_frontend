@@ -10,11 +10,9 @@ import {
   decreaseQuantityAsync,
   calculateTotal,
 } from './cartSlice';
-
-import { fetchWishlistAsync } from '../wishlist/wishlistSlice';
-
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
 const Cart = () => {
   const dispatch = useDispatch();
   const userId = '678661161046fcf9a4996dd5';
@@ -47,12 +45,6 @@ const Cart = () => {
     dispatch(removeFromCartAsync(cartId));
     setMessage('Item removed from cart');
   };
-
-  // const handleClick = (cartId, productId, user) => {
-  //   console.log(cartId, productId, user);
-  //   dispatch(moveFromCartToWishlist(cartId, productId, user));
-  //   dispatch(fetchWishlistAsync());
-  // };
 
   return (
     <>
@@ -111,7 +103,7 @@ const Cart = () => {
                               onClick={() =>
                                 dispatch(
                                   decreaseQuantityAsync({
-                                    product: cart.product?._id,
+                                    _id: cart._id,
                                   })
                                 )
                               }
@@ -124,7 +116,7 @@ const Cart = () => {
                               onClick={() =>
                                 dispatch(
                                   increaseQuantityAsync({
-                                    product: cart.product?._id,
+                                    _id: cart._id,
                                   })
                                 )
                               }
@@ -145,13 +137,6 @@ const Cart = () => {
                                   })
                                 )
                               }
-                              // onClick={() =>
-                              //   handleClick({
-                              //     _id: cart._id,
-                              //     product: cart.product?._id,
-                              //     user: '678661161046fcf9a4996dd5',
-                              //   })
-                              // }
                             >
                               Move to Wishlist
                             </button>

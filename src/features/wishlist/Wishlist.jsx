@@ -91,6 +91,7 @@ const Wishlist = () => {
                                 _id: wish?._id,
                                 product: wish.product?._id,
                                 user: '678661161046fcf9a4996dd5',
+                                quantity: 1,
                               })
                             );
                           }}

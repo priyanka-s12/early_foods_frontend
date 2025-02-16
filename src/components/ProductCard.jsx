@@ -40,6 +40,7 @@ const ProductCard = ({ product }) => {
                 addToCartAsync({
                   user: userId,
                   product: product._id,
+                  quantity: 1,
                 })
               )
             }

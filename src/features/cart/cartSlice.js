@@ -54,12 +54,12 @@ export const increaseQuantityAsync = createAsyncThunk(
 export const decreaseQuantityAsync = createAsyncThunk(
   'cart/decreaseQuantityAsync',
   async (item) => {
+    console.log(item);
     const response = await axios.put(
       'https://early-foods-backend.vercel.app/api/carts/decrease',
       item
     );
     // console.log(response);
-    toast.success(response.data.message, { position: 'top-right' });
     return response.data;
   }
 );
@@ -72,7 +72,7 @@ export const moveFromCartToWishlist = createAsyncThunk(
       newData
     );
     console.log('resp from moving cart item to wishlist: ', response.data);
-    toast.success('Item has been moved to wishlist', { position: 'top-right' });
+    toast.success(response.data.message, { position: 'top-right' });
     return response.data;
   }
 );
@@ -122,16 +122,17 @@ const cartSlice = createSlice({
     });
     builder.addCase(addToCartAsync.fulfilled, (state, action) => {
       state.status = 'success';
-      console.log('action payload for cart: ', action.payload);
+      // console.log('action payload for cart: ', action.payload);
 
-      const index = state.cartItems.findIndex(
-        (item) => item.product._id === action.payload.cart.product
+      const existingItem = state.cartItems.find(
+        (item) => item._id === action.payload.cart._id
       );
-      // console.log('index: ', index);
-      if (index === -1) {
-        state.cartItems = [...state.cartItems, action.payload.cart];
+      // console.log(existingItem);
+
+      if (existingItem) {
+        existingItem.quantity = existingItem.quantity + 1;
       } else {
-        state.cartItems[index].quantity = state.cartItems[index].quantity + 1;
+        state.cartItems.push({ ...action.payload.cart });
       }
     });
     builder.addCase(addToCartAsync.rejected, (state, action) => {
@@ -162,10 +163,9 @@ const cartSlice = createSlice({
       // console.log('Payload: ', action.payload);
 
       const index = state.cartItems.findIndex((item) => {
-        console.log(item.product._id, action.payload.product.product);
-        return item.product._id === action.payload.product.product;
+        return item._id === action.payload.product._id;
       });
-      // console.log(index);
+
       state.cartItems[index].quantity = action.payload.product.quantity;
     });
     builder.addCase(increaseQuantityAsync.rejected, (state, action) => {
@@ -181,12 +181,25 @@ const cartSlice = createSlice({
       // console.log('Payload: ', action.payload);
 
       const index = state.cartItems.findIndex((item) => {
-        console.log(item.product._id, action.payload.product.product);
-        return item.product._id === action.payload.product.product;
+        return item._id === action.payload.product._id;
       });
-      // console.log(index);
 
-      state.cartItems[index].quantity = action.payload.product.quantity;
+      // console.log('Index: ', index, 'Qty: ', state.cartItems[index].quantity);
+
+      if (state.cartItems[index].quantity === 1) {
+        state.cartItems = state.cartItems.filter((element) => {
+          // console.log(element._id, action.payload.product._id);
+          return element._id !== action.payload.product._id;
+        });
+        toast.error('Item is removed from the cart', {
+          position: 'top-right',
+        });
+      } else {
+        state.cartItems[index].quantity = action.payload.product.quantity;
+        toast.success('Decreased the quantity of item in the cart', {
+          position: 'top-right',
+        });
+      }
     });
     builder.addCase(decreaseQuantityAsync.rejected, (state, action) => {
       state.status = 'error';
@@ -203,11 +216,14 @@ const cartSlice = createSlice({
         action.payload
       );
 
-      state.cartItems = state.cartItems.filter((item) => {
-        return item.product._id !== action.payload.product.product;
-      });
+      if (action.payload.product) {
+        state.cartItems = state.cartItems.filter((item) => {
+          console.log(item.product._id, action.payload.product.product);
+          return item._id !== action.payload.product._id;
+        });
 
-      state.wishlistItems = [...state.wishlistItems, action.payload.product];
+        state.wishlistItems = [...state.wishlistItems, action.payload.product];
+      }
     });
     builder.addCase(moveFromCartToWishlist.rejected, (state, action) => {
       state.status = 'error';

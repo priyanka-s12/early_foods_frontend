@@ -57,6 +57,7 @@ const wishlistSlice = createSlice({
   name: 'wishlist',
   initialState: {
     wishlistItems: [],
+    cartItems: [],
     status: 'idle',
     error: null,
   },
@@ -121,6 +122,7 @@ const wishlistSlice = createSlice({
       );
 
       state.wishlistItems = state.wishlistItems.filter((item) => {
+        console.log(item.product._id, action.payload.product.product);
         return item.product._id !== action.payload.product.product;
       });
     });
