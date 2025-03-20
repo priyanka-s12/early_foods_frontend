@@ -21,20 +21,19 @@ const Cart = () => {
   const { cartItems, status, error, totalPrice, totalCartItems } = useSelector(
     (state) => state.cart
   );
-  // console.log(
-  //   'Cart data: ',
-  //   cartItems,
-  //   totalPrice,
-  //   cartItems.length,
-  //   totalCartItems
-  // );
 
-  const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
-  // console.log('Wishlist data from cart: ', wishlistItems, wishlistItems.length);
+  console.log(
+    'Cart data: ',
+    cartItems,
+    totalPrice,
+    cartItems.length,
+    totalCartItems
+  );
+
+  const cartLength = cartItems.reduce((acc, curr) => acc + curr.quantity, 0);
 
   useEffect(() => {
     dispatch(fetchCartAsync());
-    // dispatch(fetchWishlistAsync());
   }, [dispatch]);
 
   useEffect(() => {
@@ -58,48 +57,33 @@ const Cart = () => {
         <div className="row">
           {cartItems.length > 0 ? (
             <>
-              {' '}
               <div className="col-md-8">
                 {message && <p className="alert alert-success">{message}</p>}
-                <p>
+                {/* <p>
                   {cartItems.length} product
                   {cartItems.length > 1 ? 's' : ''}
-                </p>
+                </p> */}
 
                 <div className="row">
                   {cartItems.map((cart) => (
-                    <div className="col-md-4" key={cart._id}>
-                      <div className="card mb-3">
-                        <Link to={`/products/${cart.product?._id}`}>
+                    <div key={cart._id} className="card">
+                      <div className="row">
+                        <div className="col-md-4 mb-3">
                           <img
                             src={cart.product?.imageUrl}
                             alt={cart.product?.productTitle}
                             className="rounded img-fluid"
+                            style={{ height: 200 }}
                           />
-                        </Link>
-                        <div className="card-body text-center">
-                          <h5>{cart.product?.productTitle}</h5>
-
-                          <div className="d-flex justify-content-between mt-3">
-                            <p></p>
-                            <p>
-                              <i
-                                className="bi bi-star-fill me-2"
-                                style={{ fontSize: '1rem', color: '#f1c40f' }}
-                              ></i>
-                              {cart.product?.rating} (
-                              {cart.product?.numberOfReviews})
-                            </p>
-                          </div>
-
-                          <div className="d-flex justify-content-between">
+                        </div>
+                        <div className="col-md-8">
+                          <div className="card-body">
+                            <h5 className="card-title">
+                              {cart.product?.productTitle}
+                            </h5>
                             <p>₹ {cart.product?.sellingPrice}</p>
-                            <p>{cart.product?.netWeight}g</p>
-                          </div>
-
-                          <div className="d-flex justify-content-around">
                             <button
-                              className="btn btn-outline-dark"
+                              className="btn btn-outline-dark me-2"
                               onClick={() =>
                                 dispatch(
                                   decreaseQuantityAsync({
@@ -112,7 +96,7 @@ const Cart = () => {
                             </button>
                             {cart.quantity}
                             <button
-                              className="btn btn-outline-dark"
+                              className="btn btn-outline-dark ms-2"
                               onClick={() =>
                                 dispatch(
                                   increaseQuantityAsync({
@@ -123,30 +107,30 @@ const Cart = () => {
                             >
                               <i className="bi bi-plus"></i>
                             </button>
-                          </div>
 
-                          <div className="mt-3">
-                            <button
-                              className="card-link btn btn-primary"
-                              onClick={() =>
-                                dispatch(
-                                  moveFromCartToWishlist({
-                                    _id: cart._id,
-                                    product: cart.product?._id,
-                                    user: '678661161046fcf9a4996dd5',
-                                  })
-                                )
-                              }
-                            >
-                              Move to Wishlist
-                            </button>
+                            <div className="mt-3">
+                              <button
+                                className="card-link btn btn-primary"
+                                onClick={() =>
+                                  dispatch(
+                                    moveFromCartToWishlist({
+                                      _id: cart._id,
+                                      product: cart.product?._id,
+                                      user: '678661161046fcf9a4996dd5',
+                                    })
+                                  )
+                                }
+                              >
+                                Move to Wishlist
+                              </button>
 
-                            <button
-                              className="card-link btn btn-outline-danger"
-                              onClick={() => handleDelete(cart._id)}
-                            >
-                              <i className="bi bi-trash3"></i>
-                            </button>
+                              <button
+                                className="card-link btn btn-outline-danger"
+                                onClick={() => handleDelete(cart._id)}
+                              >
+                                <i className="bi bi-trash3"></i>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -155,10 +139,15 @@ const Cart = () => {
                 </div>
               </div>
               <div className="col-md-4">
-                <h4>Total Price</h4>
                 <div className="card">
+                  <h4 className="card-header">Cart Details</h4>
                   <div className="card-body">
-                    <h4>₹ {totalPrice}</h4>
+                    <p>
+                      Total Items: {cartLength} product
+                      {cartLength > 1 ? 's' : ''}
+                    </p>
+                    <p>Subtotal: ₹ {totalPrice}</p>
+                    <p>Total Price: ₹ {totalPrice}</p>
                     <br />
                     <div className="d-grid gap-2">
                       <Link className="btn btn-outline-primary" to="/checkout">

@@ -16,6 +16,8 @@ import AddressForm from './pages/AddressForm';
 import Wishlist from './features/wishlist/Wishlist';
 import Cart from './features/cart/Cart';
 import Checkout from './pages/Checkout';
+import OrderSuccess from './pages/OrderSuccess';
+import Orders from './features/order/Orders';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +38,8 @@ const router = createBrowserRouter([
   { path: '/account/wishlist/:userId', element: <Wishlist /> },
   { path: '/account/cart/:userId', element: <Cart /> },
   { path: '/checkout', element: <Checkout /> },
+  { path: '/success', element: <OrderSuccess /> },
+  { path: '/orders', element: <Orders /> },
 ]);
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -61,9 +61,13 @@ const Wishlist = () => {
                         className="rounded img-fluid"
                       />
                     </Link>
-                    <div className="card-body text-center">
-                      <h5>{wish.product?.productTitle}</h5>
-
+                    <div
+                      className="card-body text-center"
+                      style={{ height: 240 }}
+                    >
+                      <h5 className="card-title">
+                        {wish.product?.productTitle}
+                      </h5>
                       <div className="d-flex justify-content-between mt-3">
                         <p></p>
                         <p>

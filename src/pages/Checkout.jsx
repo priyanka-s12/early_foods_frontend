@@ -1,5 +1,6 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { fetchUserByIdAsync } from '../features/user/userSlice';
@@ -8,30 +9,37 @@ import {
   fetchCartAsync,
   calculateTotal,
   calculateTotalCartItems,
+  removeFromCartAsync,
 } from '../features/cart/cartSlice';
+import { createOrderAsync } from '../features/order/orderSlice';
+
 const Checkout = () => {
   const [selectAddress, setSelectAddress] = useState();
   const [message, setMessage] = useState('');
-  const [orderConfirm, setOrderConfirm] = useState(false);
+  // const [orderConfirm, setOrderConfirm] = useState(false);
   const dispatch = useDispatch();
   const userId = '678661161046fcf9a4996dd5';
+  let navigate = useNavigate();
 
   const { user } = useSelector((state) => state.user);
-  console.log(user);
+  // console.log(user);
 
   const { addresses, status, error } = useSelector((state) => state.address);
-  console.log(addresses);
+  // console.log(addresses);
 
   const { cartItems, totalPrice, totalCartItems } = useSelector(
     (state) => state.cart
   );
   console.log(
-    'Cart data: ',
+    'Cart data in checkout: ',
     cartItems,
     totalPrice,
     cartItems.length,
     totalCartItems
   );
+
+  const { orders } = useSelector((state) => state.order);
+  console.log(orders);
 
   const addressFind = addresses.find((item) => item._id === selectAddress);
   console.log(addressFind);
@@ -46,12 +54,24 @@ const Checkout = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(selectAddress);
-    if (selectAddress) {
-      setMessage('Order Placed Successfully...!!!');
-      setOrderConfirm(true);
+    console.log(cartItems, selectAddress);
+
+    if (!selectAddress) {
+      setMessage('Please select an address');
     } else {
-      setMessage('Please select an address.');
+      cartItems.map((item) => {
+        console.log(item.product._id, item.quantity, selectAddress, item._id);
+        dispatch(
+          createOrderAsync({
+            product: item.product._id,
+            quantity: item.quantity,
+            shippingAddress: selectAddress,
+          })
+        );
+        dispatch(removeFromCartAsync(item._id));
+      });
+
+      navigate('/success');
     }
   };
   return (
@@ -59,8 +79,7 @@ const Checkout = () => {
       <Header />
       <main className="container py-3">
         {message && <p className="alert alert-success">{message}</p>}
-
-        {!orderConfirm ? (
+        {
           <div className="row">
             <div className="col-md-6">
               <p>
@@ -95,6 +114,14 @@ const Checkout = () => {
                     </li>
                   </div>
                 ))}
+                <li className="list-group-item">
+                  <Link
+                    className="btn btn-outline-primary ms-4"
+                    to={`/account/addresses/add`}
+                  >
+                    Add New Address
+                  </Link>
+                </li>
               </ul>
             </div>
             <div className="col-md-6 mt-3">
@@ -135,56 +162,7 @@ const Checkout = () => {
               </div>
             </div>
           </div>
-        ) : (
-          <div className="row">
-            <h4 className="mb-3">Your Order Summary</h4>
-            <div className="col-md-6">
-              <ul className="list-group list-group-flush">
-                {cartItems.map((item) => (
-                  <div key={item._id}>
-                    <li className="list-group-item d-flex justify-content-between align-items-center">
-                      <img
-                        src={item.product?.imageUrl}
-                        className="img-fluid rounded"
-                        style={{ height: '75px' }}
-                      />
-                      <span>
-                        {item.product?.productTitle} x {item.quantity}
-                      </span>
-                      <span>
-                        ₹ {item.quantity * item.product?.sellingPrice}
-                      </span>
-                    </li>
-                  </div>
-                ))}
-              </ul>
-              <ul className="list-group mt-3">
-                <li className="list-group-item d-flex justify-content-between">
-                  <p>Subtotal - ({totalCartItems} items) </p>
-                  <p>₹ {totalPrice}</p>
-                </li>
-                <li className="list-group-item d-flex justify-content-between">
-                  <h5>Total Price</h5>
-                  <h5>₹ {totalPrice}</h5>
-                </li>
-              </ul>
-            </div>
-            <div className="col-md-6">
-              <h4 className="mt-3">Shipping Address</h4>
-              <span>
-                {addressFind.firstName} {addressFind.lastName}
-                <br />
-                {addressFind.addressLine1}, {addressFind.addressLine2},<br />
-                {addressFind.landmark}, <br />
-                {addressFind.city}, {addressFind.pincode}
-                <br />
-                {addressFind.country}
-                <br />
-                Phone Number: {addressFind.mobileNumber}
-              </span>
-            </div>
-          </div>
-        )}
+        }
       </main>
       <Footer />
     </>

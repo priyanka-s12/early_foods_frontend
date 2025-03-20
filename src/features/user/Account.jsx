@@ -26,33 +26,39 @@ const Account = () => {
           {status === 'loading' && <p>Loading...</p>}
           {error && <p>{error}</p>}
           {user && (
-            <div className="col-md-4">
-              <div className="card">
-                <div className="card-header">
-                  <h4>Profile</h4>
-                </div>
-                <div className="card-body">
-                  <div className="card-text">
-                    <p>
-                      <strong>Name: </strong>
-                      {user.firstName} {user.lastName}
-                    </p>
+            <>
+              <div className="col-md-4">
+                <div className="card">
+                  <div className="card-header">
+                    <h4>Profile</h4>
                   </div>
-                  <div className="card-text">
-                    <p>
-                      <strong>Email: </strong>
-                      {user.email}
-                    </p>
+                  <div className="card-body">
+                    <div className="card-text">
+                      <p>
+                        <strong>Name: </strong>
+                        {user.firstName} {user.lastName}
+                      </p>
+                    </div>
+                    <div className="card-text">
+                      <p>
+                        <strong>Email: </strong>
+                        {user.email}
+                      </p>
+                    </div>
+                    <Link
+                      className="btn btn-outline-primary"
+                      to={`/account/addresses/${userId}`}
+                    >
+                      View Saved Addresses
+                    </Link>
+                    <br />
+                    <Link className="btn btn-outline-primary mt-3" to="/orders">
+                      View Order History
+                    </Link>
                   </div>
-                  <Link
-                    className="btn btn-outline-primary"
-                    to={`/account/addresses/${userId}`}
-                  >
-                    Edit
-                  </Link>
                 </div>
               </div>
-            </div>
+            </>
           )}
         </div>
       </main>
