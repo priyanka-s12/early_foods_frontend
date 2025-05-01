@@ -20,10 +20,10 @@ Early foods is an e-commerce application where you can buy healthy and millet ba
 
 ## Technology Stack
 
-- **Frontend** - Reactjs (with Vite), React Router v6, Bootstrap 5.3, Bootstrap icons, React hot toast, Chart.js
+- **Frontend** - Reactjs (with Vite), React Router v6, Bootstrap 5.3, Bootstrap icons, React hot toast, Axios for API calls
 - **State management** - Redux toolkit
 - **Backend -** Node.js, Express.js
-- **Database -** MongoDB, Mongoose
+- **Database -** MongoDB with models for product, category, cart, wishlist, user, address, order
 - **Deployment -** Vercel
 
 ## Installation
