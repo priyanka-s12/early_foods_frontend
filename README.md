@@ -28,7 +28,7 @@ Early foods is an e-commerce application where you can buy healthy and millet ba
 
 ## Installation
 ```
-git clone <https://github.com/priyanka-s12/early_foods_frontend.git>
+git clone https://github.com/priyanka-s12/early_foods_frontend.git
 cd early_foods_frontend
 npm install
 npm run dev
